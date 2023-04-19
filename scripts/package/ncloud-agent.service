@@ -1,0 +1,12 @@
+[Unit]
+Description=nCloud Agent
+After=syslog.target network.target
+
+[Service]
+User=ncloud
+Group=ncloud
+WorkingDirectory=/usr/lib/ncloud/current
+ExecStart=/usr/bin/agent /usr/lib/ncloud/current
+
+[Install]
+WantedBy=multi-user.target

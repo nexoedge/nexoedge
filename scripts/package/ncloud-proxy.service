@@ -1,0 +1,13 @@
+[Unit]
+Description=nCloud Proxy
+After=syslog.target network.target redis.service
+
+[Service]
+User=ncloud
+Group=ncloud
+LimitNOFILE=2048
+WorkingDirectory=/usr/lib/ncloud/current
+ExecStart=/usr/bin/proxy /usr/lib/ncloud/current
+
+[Install]
+WantedBy=multi-user.target

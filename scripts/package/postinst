@@ -1,0 +1,64 @@
+#!/bin/bash
+
+ncloud_lib_dir=/usr/lib/ncloud
+sample_config_dir=${ncloud_lib_dir}/sample
+current_config_dir=${ncloud_lib_dir}/current
+ncloud_proxy_service=${ncloud_lib_dir}/ncloud-proxy.service
+ncloud_agent_service=${ncloud_lib_dir}/ncloud-agent.service
+systemd_dir=/etc/systemd/system
+
+# add user ncloud
+useradd -M ncloud
+# disable user login
+usermod -L ncloud
+
+# create new directory for working configuration if newly installed
+if  [ ! -d ${current_config_dir} ] && [ -d ${sample_config_dir} ]; then
+    cp -R "${sample_config_dir}" "${current_config_dir}" && chown -R ncloud:ncloud "${current_config_dir}"
+    # print the default location of configuration files
+    if [ "$enable_proxy" == "yes" ] || [ "$enable_agent" == "yes" ]; then
+        echo "Please update the config. files in '${current_config_dir}' if needed."
+    fi
+elif [ -d ${sample_config_dir} ]; then
+    echo "Please refer to the latest version of config. files in '${sample_config_dir}' and update those files in '${current_config_dir}' if needed." 
+fi
+
+# proxy service
+if [ -f ${ncloud_proxy_service} ]; then
+    # ask if the proxy should be registered as a service
+    enable_proxy=""
+    if [ -t 0 ]; then
+        while [ "$enable_proxy" != "yes" ] && [ "$enable_proxy" != "no" ]; do
+            read -p "Start Proxy as a service (yes/no)? " enable_proxy
+        done
+    else
+        enable_proxy="no"
+    fi
+    # setup the proxy service
+    chmod +x ${ncloud_proxy_service}
+    if [ "$enable_proxy" == "yes" ]; then
+        systemctl enable ${ncloud_proxy_service}
+        systemctl start ncloud-proxy
+        echo "Restart Proxy after updating config. files ('service ncloud-proxy restart')."
+    fi
+fi
+
+# agent service
+if [ -f ${ncloud_agent_service} ]; then
+    # ask if the agent should be registered as a service
+    enable_agent=""
+    if [ -t 0 ]; then
+        while [ "$enable_agent" != "yes" ] && [ "$enable_agent" != "no" ]; do
+            read -p "Start Agent as a service (yes/no)? " enable_agent
+        done
+    else
+        enable_agent="no"
+    fi
+    # setup the agent service
+    chmod +x ${ncloud_agent_service}
+    if [ "$enable_agent" == "yes" ]; then
+        systemctl enable ${ncloud_agent_service}
+        systemctl start ncloud-agent
+        echo "Restart Agent after updating config. files ('service ncloud-agent restart')."
+    fi
+fi

@@ -1,0 +1,11 @@
+--- Microsoft.WindowsAzure.Storage/includes/was/core.h	2023-02-11 12:29:24.039564151 +0000
++++ Microsoft.WindowsAzure.Storage/includes/was/core.h	2023-02-11 12:23:45.665840200 +0000
+@@ -1884,7 +1884,7 @@
+ }} // namespace azure::storage
+ 
+ #ifndef _WIN32
+-#define UNREFERENCED_PARAMETER(P) (P)
++#define UNREFERENCED_PARAMETER(P) ;
+ #endif
+ 
+ #pragma pop_macro("max")

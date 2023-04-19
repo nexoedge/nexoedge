@@ -1,0 +1,116 @@
+diff -Naur cpp-netlib-0.13.0-final/CMakeLists.txt cpp-netlib-0.13.0-final-mod/CMakeLists.txt
+--- cpp-netlib-0.13.0-final/CMakeLists.txt	2018-07-19 06:37:41.000000000 +0000
++++ cpp-netlib-0.13.0-final-mod/CMakeLists.txt	2019-12-23 06:09:49.766774393 +0000
+@@ -8,9 +8,9 @@
+ project(CPP-NETLIB)
+ 
+ option( CPP-NETLIB_BUILD_SHARED_LIBS "Build cpp-netlib as shared libraries." OFF )
+-option( CPP-NETLIB_BUILD_TESTS "Build the cpp-netlib project tests." ON)
++option( CPP-NETLIB_BUILD_TESTS "Build the cpp-netlib project tests." OFF)
+ # option( CPP-NETLIB_BUILD_EXPERIMENTS "Build the cpp-netlib project experiments." ON)
+-option( CPP-NETLIB_BUILD_EXAMPLES "Build the cpp-netlib project examples." ON)
++option( CPP-NETLIB_BUILD_EXAMPLES "Build the cpp-netlib project examples." OFF)
+ option( CPP-NETLIB_ENABLE_HTTPS "Build cpp-netlib with support for https if OpenSSL is found." ON)
+ option( CPP-NETLIB_STATIC_OPENSSL "Build cpp-netlib using static OpenSSL" OFF)
+ option( CPP-NETLIB_STATIC_BOOST "Build cpp-netlib using static Boost" OFF)
+--- ../third-party/cpp-netlib-0.13.0-final/boost/network/protocol/stream_handler.hpp	2018-07-19 06:37:41.000000000 +0000
++++ include/boost/network/protocol/stream_handler.hpp	2023-03-25 07:05:58.984784127 +0000
+@@ -19,7 +19,9 @@
+ #include <boost/asio/detail/throw_error.hpp>
+ #include <boost/asio/error.hpp>
+ #include <boost/asio/io_service.hpp>
++#if BOOST_VERSION < 106600
+ #include <boost/asio/stream_socket_service.hpp>
++#endif
+ #include <cstddef>
+ 
+ #ifdef BOOST_NETWORK_ENABLE_HTTPS
+@@ -52,12 +54,21 @@
+   stream_handler(boost::asio::io_service& io,
+                  std::shared_ptr<ssl_context> ctx =
+                      std::shared_ptr<ssl_context>()) {
++    // drop boost::ref() for boost of newer version, https://github.com/boostorg/asio/issues/227
++#if BOOST_VERSION >= 106600
++    tcp_sock_ = std::make_shared<tcp_socket>(io);
++#else
+     tcp_sock_ = std::make_shared<tcp_socket>(boost::ref(io));
++#endif
+     ssl_enabled = false;
+     if (ctx) {
+       /// SSL is enabled
+       ssl_sock_ =
++#if BOOST_VERSION >= 106600
++          std::make_shared<ssl_socket>(io, *ctx);
++#else
+           std::make_shared<ssl_socket>(boost::ref(io), boost::ref(*ctx));
++#endif
+       ssl_enabled = true;
+     }
+   }
+@@ -172,6 +183,17 @@
+ 
+   bool is_ssl_enabled() { return ssl_enabled; }
+ 
++#if BOOST_VERSION >= 106600
++  typedef boost::asio::basic_stream_socket<boost::asio::ip::tcp, boost::asio::io_context::executor_type> socket_type;
++  typedef boost::asio::ip::tcp::socket executor_type;
++  boost::asio::any_io_executor get_executor() {
++    if (ssl_enabled)
++      return ssl_sock_->get_executor();
++    else
++      return tcp_sock_->get_executor();
++  }
++#endif
++
+  private:
+   std::shared_ptr<tcp_socket> tcp_sock_;
+   std::shared_ptr<ssl_socket> ssl_sock_;
+--- mod/boost/network/uri/detail/uri_parts.hpp	2023-04-10 05:08:53.526719014 +0000
++++ original/boost/network/uri/detail/uri_parts.hpp	2018-07-19 06:37:41.000000000 +0000
+@@ -29,26 +29,26 @@
+   void update() {
+     if (!user_info) {
+       if (host) {
++        user_info = boost::make_optional(iterator_range<FwdIter>(std::begin(host.get()),
+-        user_info = make_optional(iterator_range<FwdIter>(std::begin(host.get()),
+                                             std::begin(host.get())));
+       } else if (path) {
++        user_info = boost::make_optional(iterator_range<FwdIter>(std::begin(path.get()),
+-        user_info = make_optional(iterator_range<FwdIter>(std::begin(path.get()),
+                                             std::begin(path.get())));
+       }
+     }
+ 
+     if (!host) {
++      host = boost::make_optional(iterator_range<FwdIter>(std::begin(path.get()),
+-      host = make_optional(iterator_range<FwdIter>(std::begin(path.get()),
+                                      std::begin(path.get())));
+     }
+ 
+     if (!port) {
++      port = boost::make_optional(iterator_range<FwdIter>(std::end(host.get()),
+-      port = make_optional(iterator_range<FwdIter>(std::end(host.get()),
+                                      std::end(host.get())));
+     }
+ 
+     if (!path) {
++      path = boost::make_optional(iterator_range<FwdIter>(std::end(port.get()),
+-      path = make_optional(iterator_range<FwdIter>(std::end(port.get()),
+                                      std::end(port.get())));
+     }
+   }
+@@ -70,12 +70,12 @@
+     hier_part.update();
+ 
+     if (!query) {
++      query = boost::make_optional(iterator_range<FwdIter>(std::end(hier_part.path.get()),
+-      query = make_optional(iterator_range<FwdIter>(std::end(hier_part.path.get()),
+                                       std::end(hier_part.path.get())));
+     }
+ 
+     if (!fragment) {
++      fragment = boost::make_optional(iterator_range<FwdIter>(std::end(query.get()),
+-      fragment = make_optional(iterator_range<FwdIter>(std::end(query.get()),
+                                          std::end(query.get())));
+     }
+   }

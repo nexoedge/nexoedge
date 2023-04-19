@@ -1,0 +1,12 @@
+--- CMakeLists.txt      2023-03-25 11:49:32.464709101 +0000
++++ CMakeLists.txt       2023-03-25 12:07:53.428704246 +0000
+@@ -111,7 +111,7 @@
+ # Compile and link lib_oss_c_sdk
+ include_directories(${APR_INCLUDE_DIR})
+ include_directories(${APR_UTIL_INCLUDE_DIR})
+-include_directories(${MINIXML_INCLUDE_DIR})
++include_directories(third_party/include/mxml)
+ include_directories(${CURL_INCLUDE_DIR})
+ 
+ aux_source_directory(oss_c_sdk SRC_LIST)
+

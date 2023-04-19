@@ -1,0 +1,19 @@
+#!/bin/bash
+
+systemd_dir=/etc/systemd/system
+ncloud_proxy_service=${systemd_dir}/ncloud-proxy.service
+ncloud_agent_service=${systemd_dir}/ncloud-agent.service
+
+# stop and remove the services
+if [ -f ${ncloud_proxy_service} ]; then
+    systemctl stop ncloud-proxy
+    systemctl disable ncloud-proxy 
+fi
+if [ -f ${ncloud_agent_service} ]; then
+    systemctl stop ncloud-agent
+    systemctl disable ncloud-agent
+fi
+
+systemctl daemon-reload
+
+exit 0

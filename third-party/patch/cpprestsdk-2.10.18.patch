@@ -1,0 +1,11 @@
+--- Release/src/http/common/http_helpers.cpp	2021-02-02 04:03:00.000000000 +0000
++++ third-party/cpprestsdk-2.10.18/Release/src/http/common/http_helpers.cpp	2023-03-25 07:42:20.012774509 +0000
+@@ -88,7 +88,7 @@
+ #ifdef _WIN32
+         sprintf_s(buffer, sizeof(buffer), "%8IX", bytes_read);
+ #else
+-        snprintf(buffer, sizeof(buffer), "%8zX", bytes_read);
++        snprintf(buffer, sizeof(buffer), "%8X", static_cast<uint32_t>(bytes_read));
+ #endif
+         memcpy(&data[0], buffer, 8);
+         while (data[offset] == ' ')
