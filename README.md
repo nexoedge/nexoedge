@@ -1,8 +1,10 @@
-# nCloud
+# Nexoedge
+
+[![OpenSSF Best Practices](https://bestpractices.coreinfrastructure.org/projects/7760/badge)](https://bestpractices.coreinfrastructure.org/projects/7760)
 
 *Community Version (v1.0)* 
 
-**nCloud is a multi-cloud storage system that employs erasure coding for data protection**. It applies a network-coding-inspired repair technique on erasure coding for improved repair performance and supports multiple cloud storage as storage destinations. By interconnecting multiple cloud storage, nCloud enables applications to seamlessly utilize multiple cloud storage as a reliable and storage-efficient storage. 
+**Nexoedge is a multi-cloud storage system that employs erasure coding for data protection**. It applies a network-coding-inspired repair technique on erasure coding for improved repair performance and supports multiple cloud storage as storage destinations. By interconnecting multiple cloud storage, Nexoedge enables applications to seamlessly utilize multiple cloud storage as a reliable and storage-efficient storage. 
 
 ## Overview
 
@@ -10,17 +12,17 @@ The system consists of two key entities: *proxy* and *agent*.
 
 A proxy handles user requests and access data in storage destinations via remote Agents.  It transparently distributes/reassembles data in storage destinations via coding operations. It persists file metadata and system states to a metadata store.
 
-An agent handles data access at storage destinations within the same data center or cloud, and assists data repair by encoding data within the same data center or cloud. nCloud abstracts each storage destination as a *storage container*. An agent can manages multiple storage containers, while each storage container is associated with one agent.
+An agent handles data access at storage destinations within the same data center or cloud, and assists data repair by encoding data within the same data center or cloud. Nexoedge abstracts each storage destination as a *storage container*. An agent can manages multiple storage containers, while each storage container is associated with one agent.
 
 ![ncloud_architecture](figs/architecture.png)
 
-nCloud provides file storage to applications using the SMB storage protocol. Specifically, we extended the open-source [Samba][samba] framework by adding a virtual file system (VFS) module which communicates with an nCloud proxy for data storage.
+Nexoedge provides file storage to applications using the SMB storage protocol. Specifically, we extended the open-source [Samba][samba] framework by adding a virtual file system (VFS) module which communicates with an Nexoedge proxy for data storage.
 
-nCloud proxies and agents communicates over TCP/IP connections.
+Nexoedge proxies and agents communicates over TCP/IP connections.
 
 ### Modular Design
 
-nCloud adopts a modular design to enable further system expansion, e.g., addition of new features and customization.
+Nexoedge adopts a modular design to enable further system expansion, e.g., addition of new features and customization.
 
 Modules in a proxy and their functions:
 
@@ -37,7 +39,7 @@ Modules in an agent and their functions:
 
 ### File Operations
 
-nCloud supports the following basic file operations:
+Nexoedge supports the following basic file operations:
 
 - File create (new write)
 - File read
@@ -48,23 +50,23 @@ nCloud supports the following basic file operations:
 
 ### Storage Schemes
 
-nCloud supports the following coding schemes for data redundancy:
+Nexoedge supports the following coding schemes for data redundancy:
 
 - [Reed-Solomon (RS) codes][rscodes] 
 
-nCloud realizes the [repair method][rscar] for RS codes for reduced repair traffic in a multi-cloud storage.
+Nexoedge realizes the [repair method][rscar] for RS codes for reduced repair traffic in a multi-cloud storage.
 
 ### Storage Interface
 
-nCloud exports a file-based interface using the [SMB][smb] protocol. 
+Nexoedge exports a file-based interface using the [SMB][smb] protocol. 
 
 #### SMB
 
-nCloud exports a SMB interface by extending VFS of [Samba][samba]. 
+Nexoedge exports a SMB interface by extending VFS of [Samba][samba]. 
 
 ![CIFS interface](figs/cifs_interface.jpg)
 
-The SMB interface communicates with nCloud via sockets. 
+The SMB interface communicates with Nexoedge via sockets. 
 
 See the [build and installation guide](INSTALL.md) for the installation instructions.
 
@@ -76,7 +78,7 @@ Reporter (`ncloud-reporter`) is a tool which communicates with a proxy to genera
 
 #### Admin Portal
 
-Admin portal is a user-friendly web-based portal for monitoring the nCloud system. It visualizes the status and statistics which a reporter periodically collects from a proxy.
+Admin portal is a user-friendly web-based portal for monitoring the Nexoedge system. It visualizes the status and statistics which a reporter periodically collects from a proxy.
 
 ![admin_portal](figs/monitoring.png)
 
@@ -92,7 +94,7 @@ We provide example configuration files in the directory `sample/` for running st
 
 See the [configuration guide](CONFIG.md) for details on the available configuration options.
 
-## Running nCloud
+## Running Nexoedge
 
 ### Setup
 
@@ -106,7 +108,7 @@ This example describes a setup with a Samba service, *one* proxy, and *five* age
 
 #### Port Usage
 
-nCloud listens on the following ports by default for entity communications.
+Nexoedge listens on the following ports by default for entity communications.
 
 * Proxy: 57002, 59001
 

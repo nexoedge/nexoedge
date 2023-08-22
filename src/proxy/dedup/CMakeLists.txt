@@ -1,6 +1,6 @@
 cmake_minimum_required( VERSION 3.5 )
 
-project( nCloud_Dedup )
+project( Nexoedge_Dedup )
 
 set( CMAKE_CXX_STANDARD 11 )
 

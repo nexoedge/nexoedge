@@ -19,10 +19,10 @@ if ( NOT CMAKE_BUILD_TYPE )
 endif()
 
 # build options
-option( BUILD_PROXY "Build nCloud Proxy" ON )
-option( BUILD_AGENT "Build nCloud Agent" ON )
-option( BUILD_CLIENTS "Build nCloud Clients" OFF )
-option( BUILD_UTILS "Build nCloud Utils" ON )
+option( BUILD_PROXY "Build Nexoedge Proxy" ON )
+option( BUILD_AGENT "Build Nexoedge Agent" ON )
+option( BUILD_CLIENTS "Build Nexoedge Clients" OFF )
+option( BUILD_UTILS "Build Nexoedge Utils" ON )
 
 
 #######################
@@ -70,7 +70,7 @@ set( BOOST_VERSION "${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}.${Boost_SUBMIN
 
 
 #################################
-### nCloud Output Directories ###
+### Nexoedge Output Directories ###
 #################################
 
 ## Setup for ncloud library and archive output
@@ -163,7 +163,7 @@ execute_process( COMMAND
 set( CPACK_PACKAGE_NAME "ncloud" )
 set( CPACK_PACKAGE_VERSION "1.0" )
 set( CPACK_PACKAGE_CONTACT "CUHK ADSLab" )
-set( CPACK_PACKAGE_DESCRIPTION "nCloud, store and distribute your data over multiple clouds" )
+set( CPACK_PACKAGE_DESCRIPTION "Nexoedge, store and distribute your data over multiple clouds" )
 set( CPACK_PACKAGE_DESCRIPTION_SUMMARY "Store and distribute your data over multiple clouds" )
 set( CPACK_DEB_COMPONENT_INSTALL 1 )
 set( CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA ${package_extra_controls} )

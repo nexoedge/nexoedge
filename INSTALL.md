@@ -1,6 +1,6 @@
 # Build and Installation
 
-## nCloud Components
+## Nexoedge Components
 
 ### Software Pre-requisites
 
@@ -96,7 +96,7 @@ sudo service redis-server start
 
 ## Platform-dependent Package Build
 
-nCloud uses the packaging tool in `CMake` (`CPack`) to pack all necessary libraries and binaries into an installer to avoid compiling source code from scratch on every server to deploy. Note that this packaging is platform-dependent, i.e., packages can only be installed on the same OS platform where they were built. Currently, the supported platform is Ubuntu 22.04 64-bit servers in form of Debain packages (`.deb`).
+Nexoedge uses the packaging tool in `CMake` (`CPack`) to pack all necessary libraries and binaries into an installer to avoid compiling source code from scratch on every server to deploy. Note that this packaging is platform-dependent, i.e., packages can only be installed on the same OS platform where they were built. Currently, the supported platform is Ubuntu 22.04 64-bit servers in form of Debain packages (`.deb`).
 
 ### Build packages
 

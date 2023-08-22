@@ -1,4 +1,4 @@
-nCloud uses the following open-source libraries:
+Nexoedge uses the following open-source libraries:
 
 ### General
 
