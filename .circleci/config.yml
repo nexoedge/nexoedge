@@ -22,7 +22,7 @@ jobs:
       #- run:
       #    name: "Clone source code"
       #    command: |
-      #      git clone https://github.com/helenchw/ncloud-community-version ~/project
+      #      git clone https://github.com/nexoedge/nexoedge ~/project
       - run:
           name: "Build the project"
           command: |
@@ -35,4 +35,3 @@ workflows:
   check-build-workflow:
     jobs:
       - build
-

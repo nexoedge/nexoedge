@@ -248,15 +248,14 @@ bool ChunkManager::writeFileStripe(File &file, int spareContainers[], int numSpa
                     }
                     allsuccess = allsuccess && meta[i].containerId == INVALID_CONTAINER_ID;
                     for (int j = 0; j < numChunksPerNode; j++) {
-                        // TODO not necessary(?)
-                        file.containerIds[chunkIdx] = INVALID_CONTAINER_ID;
-
                         if (meta[i].containerId == INVALID_CONTAINER_ID) { continue; }
                         int chunkIdx = i * numChunksPerNode + j;
                         // journal the write failures
-                        if (_metastore && !_metastore->updateChunkInJournal(file, events[i].chunks[j], /* isWrite */ true, /* deleteRecord */ false, meta[i].containerId)) {
-                            LOG(ERROR) << "Failed to mark chunk write failure in the journal of file " << file.name << " chunk " << events[i].chunks[j].getChunkId() << ".";
-                        }
+                        //if (_metastore && !_metastore->updateChunkInJournal(file, events[i].chunks[j], /* isWrite */ true, /* deleteRecord */ false, meta[i].containerId)) {
+                        //    LOG(ERROR) << "Failed to mark chunk write failure in the journal of file " << file.name << " chunk " << events[i].chunks[j].getChunkId() << ".";
+                        //}
+                        // TODO not necessary(?)
+                        file.containerIds[chunkIdx] = INVALID_CONTAINER_ID;
                     }
                     continue;
                 }
