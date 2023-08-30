@@ -1,27 +1,27 @@
 System Monitoring
 =================
 
-nCloud provides a web-based admin portal and a CLI tool for system monitoring.
+Nexoedge provides a web-based admin portal and a CLI tool for system monitoring.
 
 Admin Portal
 ++++++++++++
 
-We provide a user-friendly web-based admin portal for administrators to monitor the nCloud system status. It visualizes the status and statistics.
+We provide a user-friendly web-based admin portal for administrators to monitor the Nexoedge system status. It visualizes the status and statistics.
 
 .. figure:: figs/admin-portal.png
    :width: 500
    :name: admin-portal
 
-   nCloud Admin Portal
+   Nexoedge Admin Portal
 
 The installation and usage guide of the admin portal is available in a separate documentation.
 
 CLI Tools
 +++++++++
 
-nCloud reporter (`ncloud-reporter`) communicates with a proxy to generate reports on agents' status and storage usage.
+Nexoedge reporter (`ncloud-reporter`) communicates with a proxy to generate reports on agents' status and storage usage.
 
-To check nCloud's status, on a machine which runs a proxy or an agent:
+To check Nexoedge's status, on a machine which runs a proxy or an agent:
 
 .. code-block:: bash
 

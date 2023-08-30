@@ -1,7 +1,7 @@
 Use of Open-source Libraries
 ============================
 
-nCloud uses the following open-source libraries:
+Nexoedge uses the following open-source libraries:
 
 - General: Boost libraries, libevent, OpenSSL, nlohmann JSON
 - Coding: Intel Storage Acceleration Library (ISA-L)

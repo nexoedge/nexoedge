@@ -1,27 +1,27 @@
 Installation
 ============
 
-nCloud supports installation on physical and virtual machines in the community version. It also supports container-based deployment in the enterprise version.
+Nexoedge supports installation on physical and virtual machines in the community version. It also supports container-based deployment in the enterprise version.
 For machine requirements, see :ref:`sys-requirements` for details.
 
 Physical and Virtual Machines
 +++++++++++++++++++++++++++++
 
-nCloud Key Entities 
+Nexoedge Key Entities 
 ^^^^^^^^^^^^^^^^^^^
 
-#. Get the Debian package (ncloud-|version|-amd64-full.deb).
+#. Get the Debian package (nexoedge-|version|-amd64-full.deb).
 #. Update the APT repository list: 
 
    .. code-block:: bash
 
       $ sudo apt update
 
-#. Install nCloud:
+#. Install Nexoedge:
 
    .. code-block:: bash
 
-      $ sudo dpkg -i ncloud-<version>-amd64-full.deb && sudo apt install -f -y
+      $ sudo dpkg -i nexoedge-<version>-amd64-full.deb && sudo apt install -f -y
 
    - Type 'yes' to start the systemd-managed services as needed
 
@@ -44,7 +44,7 @@ The package installs configuration files to ``/usr/lib/ncloud/current`` and ``/u
 By default, proxies and agents running under the systemd-managed services use the configurations in ``/usr/lib/ncloud/current``.
 For the available configuration options, see :ref:`config`.
 
-The same procedure also applies to packages with only the proxy or agent entity, e.g., ncloud-|version|-amd64-proxy.deb and ncloud-|version|-amd64-agent.deb.
+The same procedure also applies to packages with only the proxy or agent entity, e.g., nexoedge-|version|-amd64-proxy.deb and nexoedge-|version|-amd64-agent.deb.
 
 To uninstall the package,
 
@@ -73,7 +73,7 @@ SMB/CIFS
 Unpack the release tarball, which contains
 
 - ``scripts``: scripts to run SMB/CIFS as a service
-- ``samba``: SMB/CIFS binaries with nCloud VFS
+- ``samba``: SMB/CIFS binaries with Nexoedge VFS
 
 #. Copy the SMB/CIFS binaries to ``/usr/local``:
 

@@ -59,7 +59,7 @@ Physical and Virtual Machines
 
         $ sudo service redis start
 
-   - Install the nCloud proxy
+   - Install the Nexoedge proxy
 
      .. code-block:: bash
 
@@ -84,7 +84,7 @@ Physical and Virtual Machines
 
 #. On each agent machine,
 
-   - Install the nCloud agent
+   - Install the Nexoedge agent
 
      .. code-block:: bash
 
@@ -118,7 +118,7 @@ Physical and Virtual Machines
         $ systemctl status ncloud-agent
 
 
-#. On the proxy machine, check the nCloud status:
+#. On the proxy machine, check the Nexoedge status:
 
    .. code-block:: bash
 

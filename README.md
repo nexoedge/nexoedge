@@ -14,7 +14,7 @@ A proxy handles user requests and access data in storage destinations via remote
 
 An agent handles data access at storage destinations within the same data center or cloud, and assists data repair by encoding data within the same data center or cloud. Nexoedge abstracts each storage destination as a *storage container*. An agent can manages multiple storage containers, while each storage container is associated with one agent.
 
-![ncloud_architecture](figs/architecture.png)
+![nexoedge_architecture](figs/architecture.png)
 
 Nexoedge provides file storage to applications using the SMB storage protocol. Specifically, we extended the open-source [Samba][samba] framework by adding a virtual file system (VFS) module which communicates with an Nexoedge proxy for data storage.
 
@@ -121,7 +121,7 @@ Samba listens on port 445 by default.
 1. On all machines, copy all the sample configuration files from the directory `sample/` to the working directory, e.g., the `build` folder.
    
    ```bash
-   cp <ncloud source root directory>/sample/*.ini .
+   cp <nexoedge source root directory>/sample/*.ini .
    ```
 
 2. On each of the agent machines, update the following fields in the configuration file `agent.ini`
@@ -155,7 +155,7 @@ Samba listens on port 445 by default.
 7. Make the communication library visible on the system. (Note: the paths must be absolute.)
    
    ```bash
-   sudo ln -s <ncloud source root directory>/build/lib/libncloud_zmq.so /usr/local/lib/
+   sudo ln -s <nexoedge source root directory>/build/lib/libncloud_zmq.so /usr/local/lib/
    ```
 
 8. On the proxy machine, install the Samba service according to the [installation guide](INSTALL.md) and start the Samba server.

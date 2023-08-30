@@ -4,7 +4,7 @@ Specification
 Storage Protocols
 -----------------
 
-Below are the storage protocols supported by nCloud:
+Below are the storage protocols supported by Nexoedge:
 
 **File Storage**:
 
@@ -17,7 +17,7 @@ Below are the storage protocols supported by nCloud:
 Supported Storage Backends
 --------------------------
 
-Below are the storage backends supported by nCloud:
+Below are the storage backends supported by Nexoedge:
 
 **Local Storage**: File storage supported on Linux (Ubuntu)
 

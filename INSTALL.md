@@ -116,13 +116,13 @@ To build the packages,
 
 The following packages are built:
 
-* `ncloud-<version>-amd64-proxy.deb`: `proxy` and `ncloud-reporter`
+* `nexoedge-<version>-amd64-proxy.deb`: `proxy` and `nexoedge-reporter`
 
-* `ncloud-<version>-amd64-agent.deb`: `agent`
+* `nexoedge-<version>-amd64-agent.deb`: `agent`
 
-* `ncloud-<version>-amd64-utils.deb`: `ncloud-reporter`
+* `nexoedge-<version>-amd64-utils.deb`: `nexoedge-reporter`
 
-* `ncloud-<version>-amd64-full.deb`: all the entities built 
+* `nexoedge-<version>-amd64-full.deb`: all the entities built 
 
 Remarks: Binaries compiled under the build type "Release" with `-DNDEBUG` flag defined and `-g` flag removed, and hence are smaller and generate less log messages. It is recommended to use `-DCMAKE_BUILD_TYPE=Debug` (the default mode) for development and debugging purpose.
 
@@ -136,10 +136,10 @@ To install the packages,
    sudo apt update
    ```
 
-2. Install a package, e.g., `ncloud-1.0-amd64-proxy.deb`.
+2. Install a package, e.g., `nexoedge-1.0-amd64-proxy.deb`.
    
    ```bash
-   sudo dpkg -i ncloud-1.0-amd64-proxy.deb
+   sudo dpkg -i nexoedge-1.0-amd64-proxy.deb
    sudo apt install -f -y
    ```
 
@@ -150,7 +150,7 @@ To install the packages,
 - Extract the package
   
   ```bash
-  tar zxf ncloud-cifs.tar.gz
+  tar zxf nexoedge-cifs.tar.gz
   ```
 
 - Move the folder `samba/` under `/usr/local/`

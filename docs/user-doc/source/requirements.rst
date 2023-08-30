@@ -3,7 +3,7 @@
 System Requirements
 ===================
 
-nCloud supports deployment on **physical servers and virtual machines (VMware, Hyper-V, KVM)** in the community version.
+Nexoedge supports deployment on **physical servers and virtual machines (VMware, Hyper-V, KVM)** in the community version.
 In the enterprise version, it also supports container-based deployment (Docker and Kubernetes).
 
 Platform

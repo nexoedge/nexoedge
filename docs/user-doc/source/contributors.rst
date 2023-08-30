@@ -1,7 +1,7 @@
 Contributors
 ============
 
-We thank the following developers and researchers for their contributions to the nCloud system.
+We thank the following developers and researchers for their contributions to the Nexoedge system.
 
 (in alphabetical order)
 

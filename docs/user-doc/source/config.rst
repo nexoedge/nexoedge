@@ -6,7 +6,7 @@ Configuration
 Configuration Files
 +++++++++++++++++++
 
-nCloud has essential four configuration files:
+Nexoedge has essential four configuration files:
 
 - ``general.ini``: Configurations required by *all* components
 - ``proxy.ini``: Configurations required by ``proxy`` and ``ncloud_reporter``

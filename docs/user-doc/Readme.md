@@ -1,6 +1,6 @@
 # User Documentation
 
-This is a user guide on how to deploy nCloud.
+This is a user guide on how to deploy Nexoedge.
 
 To build this guide, install [Sphinx][sphinx] and the [read-the-docs theme][sphinx_read_the_docs_theme].
 
