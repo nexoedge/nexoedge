@@ -2,10 +2,51 @@
 # See: https://circleci.com/docs/configuration-reference
 version: 2.1
 
-# Define a job to be invoked later in a workflow.
-# See: https://circleci.com/docs/configuration-reference/#jobs
-jobs:
-  build:
+jobs: 
+  dev-doc-build:
+    docker:
+      - image: ubuntu:jammy
+    steps:
+      - checkout
+      - run:
+          name: "Install the pre-requisites"
+          command: |
+            apt update
+            apt install -y doxygen graphviz
+      #- run:
+      #    name: "Clone the source code"
+      #    command: |
+      #      apt update
+      #      apt install -y git
+      #      git clone https://github.com/nexoedge/nexoedge ~/project
+      - run:
+          name: "Build the developer doc"
+          command: |
+            cd ~/project
+            doxygen
+  user-doc-build:
+    docker:
+      - image: ubuntu:jammy
+    steps:
+      - checkout
+      - run:
+          name: "Install the pre-requisites"
+          command: |
+            apt update
+            apt install -y python3-pip
+            pip install sphinx_rtd_theme
+      #- run:
+      #    name: "Clone the source code"
+      #    command: |
+      #      apt update
+      #      apt install -y git
+      #      git clone https://github.com/nexoedge/nexoedge ~/project
+      - run:
+          name: "Build the user doc"
+          command: |
+            cd ~/project/docs/user-doc
+            make html
+  code-build:
     # Specify the execution environment. You can specify an image from Docker Hub or use one of our convenience images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/configuration-reference/#executor-job
     docker:
@@ -15,23 +56,27 @@ jobs:
     steps:
       - checkout
       - run:
-          name: "Install pre-requisites"
+          name: "Install the pre-requisites"
           command: |
             apt update
             apt install -y cmake git g++ libssl-dev libboost-filesystem-dev libboost-system-dev libboost-timer-dev libboost-log-dev libboost-random-dev libboost-locale-dev libboost-regex-dev autoconf libtool nasm pkg-config libevent-dev uuid-dev redis-server redis-tools libxml2-dev libcpprest-dev libaprutil1-dev libapr1-dev libglib2.0-dev libjson-c-dev unzip curl nlohmann-json3-dev libcurl-ocaml-dev
       #- run:
-      #    name: "Clone source code"
+      #    name: "Clone the source code"
       #    command: |
+      #      apt update
+      #      apt install -y git
       #      git clone https://github.com/nexoedge/nexoedge ~/project
       - run:
-          name: "Build the project"
+          name: "Build the system components"
           command: |
             cmake -DCMAKE_BUILD_TYPE=Release ~/project
-            make
+            make package
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
 workflows:
-  check-build-workflow:
+  check-build:
     jobs:
-      - build
+      - dev-doc-build
+      - user-doc-build
+      - code-build
