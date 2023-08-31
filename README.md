@@ -64,7 +64,7 @@ Nexoedge exports a file-based interface using the [SMB][smb] protocol.
 
 Nexoedge exports a SMB interface by extending VFS of [Samba][samba]. 
 
-![CIFS interface](figs/cifs_interface.jpg)
+![CIFS interface](figs/cifs_interface.png)
 
 The SMB interface communicates with Nexoedge via sockets. 
 
@@ -220,9 +220,11 @@ See the [testing guide](TESTING.md) for details.
 
 See the [list of libraries](OPEN_SOURCE_LIBS.md) for details.
 
-## Open-source License
+## Project Licenses
 
-See the [license file](LICENSE) for details.
+The project source code is released under the [Apache License, version 2.0](https://www.apache.org/licenses/LICENSE-2.0) (see also the [license file](LICENSE)).
+
+The project documentation is released under the [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by/4.0/).
 
 ## Contributors (in alphabetical order)
 
