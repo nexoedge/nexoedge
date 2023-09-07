@@ -13,3 +13,10 @@ src/gui/gui.pro.user*
 src/cs_client/*/bin
 src/cs_client/*/obj
 src/cs_client/TestResults
+
+# docker
+docker/*.deb
+docker/*.tar.gz
+docker/*/scripts/common.sh
+docker/*/scripts/update_config.sh
+docker/cifs/lib*.so*

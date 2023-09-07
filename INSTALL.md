@@ -185,6 +185,12 @@ To install the packages,
   
   Enter the password twice
 
+
+## Docker Build
+
+See [the guide](./docker/Readme.rst) for details.
+
+
 [ubuntu2204]: http://releases.ubuntu.com/22.04/
 
 [compile-aws-prob-1-code]: https://github.com/aws/aws-sdk-cpp/blob/master/aws-cpp-sdk-core-tests/utils/FileSystemUtilsTest.cpp#L271

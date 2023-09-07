@@ -1,0 +1,118 @@
+services:
+
+  metastore:
+    image: redis:5.0
+    volumes:
+      - type: bind
+        source: ${NEXOEDGE_DATA_DIR}/metadata
+        target: /data
+
+  statsdb:
+    image: redis:5.0
+    volumes:
+      - type: bind
+        source: ${NEXOEDGE_DATA_DIR}/statsdb
+        target: /data
+
+  proxy:
+    image: nexoedge-proxy:${TAG}
+    ports:
+      - "57002:57002"
+    environment:
+      NCLOUD_PROXY_Metastore_Ip: "metastore"
+      NCLOUD_PROXY_Reporter_db_Ip: "statsdb"
+      NCLOUD_PROXY_Reporter_db_Port: "6379"
+      NCLOUD_PROXY_Dedup_Enabled: "0"
+    depends_on:
+      - metastore
+      - statsdb
+
+  storage-node-01:
+    image: nexoedge-agent:${TAG}
+    #ports:
+    #  - "57003:57003"
+    #  - "57004:57004"
+    environment:
+      NCLOUD_AGENT_Agent_Num_containers: "2"
+      NCLOUD_AGENT_Container01_Id: "1"
+      NCLOUD_AGENT_Container02_Id: "2"
+      NCLOUD_AGENT_Container01_Capacity: "107374182400"
+      NCLOUD_AGENT_Container02_Capacity: "107374182400"
+      NCLOUD_AGENT_Container01_Url: "/data01"
+      NCLOUD_AGENT_Container02_Url: "/data02"
+      NCLOUD_GENERAL_Proxy01_Ip: "proxy"
+    volumes:
+      - type: bind
+        source: ${NEXOEDGE_DATA_DIR}/container01
+        target: /data01
+      - type: bind
+        source: ${NEXOEDGE_DATA_DIR}/container02
+        target: /data02
+    depends_on:
+      - proxy
+
+  storage-node-02:
+    image: nexoedge-agent:${TAG}
+    #ports:
+    #  - "57003:57003"
+    #  - "57004:57004"
+    environment:
+      NCLOUD_AGENT_Agent_Num_containers: "2"
+      NCLOUD_AGENT_Container01_Id: "3"
+      NCLOUD_AGENT_Container02_Id: "4"
+      NCLOUD_AGENT_Container01_Capacity: "107374182400"
+      NCLOUD_AGENT_Container02_Capacity: "107374182400"
+      NCLOUD_AGENT_Container01_Url: "/data01"
+      NCLOUD_AGENT_Container02_Url: "/data02"
+      NCLOUD_GENERAL_Proxy01_Ip: "proxy"
+    volumes:
+      - type: bind
+        source: ${NEXOEDGE_DATA_DIR}/container03
+        target: /data01
+      - type: bind
+        source: ${NEXOEDGE_DATA_DIR}/container04
+        target: /data02
+    depends_on:
+      - proxy
+
+  cifs:
+    image: nexoedge-cifs:${TAG}
+    ports:
+      - "445:445"
+    volumes:
+      - type: bind
+        source: ${NEXOEDGE_DATA_DIR}/cifs-metadata
+        target: /usr/local/samba/var
+      - type: bind
+        source: ${NEXOEDGE_DATA_DIR}/cifs-share-metadata
+        target: /smb/nexoedge
+    depends_on:
+      - proxy
+
+  reporter:
+    image: nexoedge-reporter:${TAG}
+    environment:
+      NCLOUD_GENERAL_Proxy01_Ip: "proxy"
+      NCLOUD_PROXY_Reporter_db_Ip: "statsdb"
+      NCLOUD_PROXY_Reporter_db_Port: "6379"
+    depends_on:
+      - proxy
+      - statsdb
+
+  portal-backend:
+    image: nexoedge-admin-portal-webdis:${TAG}
+    environment:
+      REDIS_HOST: statsdb
+      REDIS_PORT: 6379
+    depends_on:
+      - statsdb
+
+  portal-frontend:
+    image: nexoedge-admin-portal:${TAG}
+    ports:
+      - "8080:80"
+    environment:
+      WEBDIS_REDIRECT_ADDR: "portal-backend:7379"
+    depends_on:
+      - portal-backend
+
