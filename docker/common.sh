@@ -1,4 +1,4 @@
-TAG=20230906
+TAG=latest
 DOCKER='sudo -E docker'
 
 NC='\033[0m'
