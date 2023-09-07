@@ -2,12 +2,12 @@
 
 ## Configuration Files
 
-Nexoedge has essential four configuration files:
+Nexoedge has four configuration files:
 
-- `general.ini`: Configurations required by all entities
-- `proxy.ini`: Configurations required by `proxy` and `ncloud-reporter`
-- `agent.ini`: Configurations required by `agent`
-- `storage_class.ini`: Configuration of the classes of storage required by `proxy`
+- `general.ini`: Configurations required by all entities.
+- `proxy.ini`: Configurations required by `proxy` and `ncloud-reporter`.
+- `agent.ini`: Configurations required by `agent`.
+- `storage_class.ini`: Configurations of storage policies required by `proxy`.
 
 Proxy (`proxy`), agent (`agent`) and reporter (`ncloud_reporter`) search the directories in the following order for the configuration files:
 

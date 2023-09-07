@@ -22,7 +22,7 @@ Project maintainers may be removed by explicit resignation, for prolonged inacti
 | Chan, Hoi Wan (Helen)   | [helenchw][helenchw] | hwchan@cuhk.edu.hk  |
 
 
-**Other Contributors/Maintainers**
+**Other Contributors/Maintainers (in alphabetical order)**
 
 | Name                    | GitHub | Email                | 
 |-------------------------|--------|----------------------|
@@ -36,10 +36,10 @@ Project maintainers may be removed by explicit resignation, for prolonged inacti
 
 
 [helenchw]: https://github.com/helenchw
-[kycheng]: https://keyuncheng.github.io
+[kycheng]: https://github.com/keyuncheng
 [jhge]: https://github.com/JeromeGJH
 [hmliu]: https://github.com/hmliu6
 [zfliu]: https://github.com/francisforeverhappy 
 [hlqin]: https://github.com/HailinQinJessica
-[mzhang]: https://millyz.github.io
+[mzhang]: https://github.com/millyz
 

@@ -56,7 +56,7 @@ Prepare the build environment,
    cd build
    ```
 
-3. Setup the build environment using CMake
+3. Setup the build environment using CMake.
    
    - For development:
 
@@ -72,7 +72,7 @@ Prepare the build environment,
 
 ### Build
 
-The key entities `agent`, `proxy`, `ncloud-reporter` are built by default in the `bin` folder,
+The key entities `agent`, `proxy`, `ncloud-reporter` are built by default under the `bin` folder,
 
 Build all entities 
 
@@ -116,11 +116,11 @@ To build the packages,
 
 The following packages are built:
 
-* `nexoedge-<version>-amd64-proxy.deb`: `proxy` and `nexoedge-reporter`
+* `nexoedge-<version>-amd64-proxy.deb`: `proxy` and `ncloud-reporter`
 
 * `nexoedge-<version>-amd64-agent.deb`: `agent`
 
-* `nexoedge-<version>-amd64-utils.deb`: `nexoedge-reporter`
+* `nexoedge-<version>-amd64-utils.deb`: `ncloud-reporter`
 
 * `nexoedge-<version>-amd64-full.deb`: all the entities built 
 

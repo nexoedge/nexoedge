@@ -52,19 +52,19 @@ To uninstall the package,
 
   .. code-block:: bash
 
-     $ sudo apt purge -y ncloud-full 
+     $ sudo apt purge -y nexoedge-full 
 
 - For the proxy package,
 
   .. code-block:: bash
 
-     $ sudo apt purge -y ncloud-proxy
+     $ sudo apt purge -y nexoedge-proxy
 
 - For the agent package,
 
   .. code-block:: bash
 
-     $ sudo apt purge -y ncloud-agent
+     $ sudo apt purge -y nexoedge-agent
 
 
 SMB/CIFS

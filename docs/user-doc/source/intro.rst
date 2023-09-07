@@ -65,7 +65,7 @@ The main idea of erasure coding is to divide data into *k* chunks and encode the
 Nexoedge supports Reed-Solomon (RS) codes of erasure coding, with a minimum value of *n* and *k* as 3 and 2, respectively.
 
 
-.. [#] Note that we consider erasure codes that are *maximum distance separable (MDS)*. For non-MDS codes, recoverability of the original data is not always guaranteed with only *k* chunks available. Nexoedge adopts erasure codes that are MDS.
+.. [#] Note that we consider erasure codes that are *maximum distance separable (MDS)*. For non-MDS codes, recoverability of the original data is not always guaranteed when only *k* chunks are available. Nexoedge adopts erasure codes that are MDS.
 
 
 Recovery Optimization
@@ -82,7 +82,7 @@ To optimize recovery under erasure coding, Nexoedge implements the repair optimi
 
    Conventional repair without CAR under single-chunk failure 
 
-Under conventional repair in erasure coding, DC 1 needs to collect 4 chucks from DC 2 and DC 3, and 2 chunks locally for recovering the failed chunk. Since cross-data-center network bandwidth (e.g., 1Gbps) is significantly lower than intra-data-center bandwidth (e.g., 10Gbps) in general due to operational cost, having a large repair traffic across data centers can become a performance bottleneck in data recovery. 
+Under conventional repair in erasure coding, DC 1 needs to collect 4 chucks from DC 2 and DC 3, and 2 chunks locally for recovering the failed chunk. Since cross-data-center network bandwidth (e.g., 1Gbps) is significantly lower than intra-data-center bandwidth (e.g., 10Gbps) in general due to operational cost, having a large repair traffic across data centers can become a performance bottleneck in data recovery.
 
 .. figure:: figs/network-coding-repair-traffic.png
    :width: 400

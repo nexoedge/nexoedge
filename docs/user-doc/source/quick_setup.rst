@@ -42,8 +42,8 @@ Physical and Virtual Machines
 
 #. Download the Debian packages:
 
-   - For the proxy machine, download ncloud-|version|-amd64-proxy.deb.
-   - For the agent machine, download ncloud-|version|-amd64-agent.deb.
+   - For the proxy machine, download nexoedge-|version|-amd64-proxy.deb.
+   - For the agent machine, download nexoedge-|version|-amd64-agent.deb.
 
 #. Update the APT repository list: 
 
@@ -63,7 +63,7 @@ Physical and Virtual Machines
 
      .. code-block:: bash
 
-        $ sudo dpkg -i ncloud-<version>-amd64-proxy.deb; sudo apt install -f -y
+        $ sudo dpkg -i nexoedge-<version>-amd64-proxy.deb; sudo apt install -f -y
 
      - Type **'yes'** to start the systemd-managed service for the proxy
    
@@ -80,7 +80,7 @@ Physical and Virtual Machines
 
      .. code-block:: bash
 
-        $ systemctl status ncloud-proxy
+        $ systemctl status nexoedge-proxy
 
 #. On each agent machine,
 
@@ -88,7 +88,7 @@ Physical and Virtual Machines
 
      .. code-block:: bash
 
-        $ sudo dpkg -i ncloud-<version>-amd64-agent.deb; sudo apt install -f -y
+        $ sudo dpkg -i nexoedge-<version>-amd64-agent.deb; sudo apt install -f -y
 
      - Type **'yes'** to start the systemd-managed service for the agent
    
@@ -109,13 +109,13 @@ Physical and Virtual Machines
 
      .. code-block:: bash
 
-        $ sudo service ncloud-agent restart
+        $ sudo service nexoedge-agent restart
 
    - Check the agent status 
 
      .. code-block:: bash
 
-        $ systemctl status ncloud-agent
+        $ systemctl status nexoedge-agent
 
 
 #. On the proxy machine, check the Nexoedge status:
@@ -129,11 +129,11 @@ Physical and Virtual Machines
 
 #. On the proxy machine, install and start the Samba SMB service.
 
-   - Download the SMB package (`ncloud-cifs.tar.gz`) and unpack it
+   - Download the SMB package (`nexoedge-cifs.tar.gz`) and unpack it
 
      .. code-block:: bash
 
-        $ tar zxf ncloud-cifs.tar.gz
+        $ tar zxf nexoedge-cifs.tar.gz
 
    - Move the folder `samba/` under `/usr/local/`
 

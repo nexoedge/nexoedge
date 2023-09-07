@@ -20,7 +20,7 @@ Recommended minimal machine configurations for 1TB storage:
 Resources        Proxy     Agent
 =============== ========= ===========
 vCPU             2         2
-RAM(GB)          8         4
-Disk (GB)        64        16
+RAM (GB)         8         4
+Disk (GB)        32        16
 Network (Mbps)   50        50 
 =============== ========= ===========
