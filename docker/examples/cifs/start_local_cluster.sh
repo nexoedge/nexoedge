@@ -12,7 +12,7 @@ source ${base_dir}/../../common/scripts/common.sh
 source ${base_dir}/../../common.sh
 
 build_image() {
-  cd ${base_dir}/../../ && bash ./build_image.sh && cd -
+  cd ${base_dir}/../../ && bash ./build_images.sh && cd -
 }
 
 start_redis_on_host_docker_network() {
