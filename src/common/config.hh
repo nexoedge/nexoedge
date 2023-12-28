@@ -39,6 +39,11 @@ public:
     int getTcpKeepAliveIntv() const;
     int getTcpKeepAliveCnt() const;
     int getTcpBufferSize() const;
+    int useCurve() const;
+    const char *getAgentCurvePublicKey() const;
+    const char *getAgentCurveSecretKey() const;
+    const char *getProxyCurvePublicKey() const;
+    const char *getProxyCurveSecretKey() const;
     // general.failureDetection
     int getFailureTimeout() const;
     // general.event
@@ -154,6 +159,7 @@ private:
     unsigned long long readULL (const boost::property_tree::ptree &pt, const char *key) const;
     double readFloat (const boost::property_tree::ptree &pt, const char *key) const;
     std::string readString (const boost::property_tree::ptree &pt, const char *key) const;
+    char* readBytesFromFile (const std::string filename, int numBytesToRead) const;
 
     int readIntWithBounds (const boost::property_tree::ptree &pt, const char *key, int min = 0, int max = INT32_MAX) const;
     int readIntWithBoundsAndDefault (const boost::property_tree::ptree &pt, const char *key, int dv = 0, int min = 0, int max = INT32_MAX) const;
@@ -214,6 +220,15 @@ private:
                 int cnt;
             } tcpKeepAlive;
             int tcpBuffer;
+            bool useCurve;
+            struct {
+                char *curvePublicKey = nullptr;
+                char *curveSecretKey = nullptr;
+            } proxy;
+            struct {
+                char *curvePublicKey = nullptr;
+                char *curveSecretKey = nullptr;
+            } agent;
         } network;
         struct {
             bool verifyChunkChecksum;
@@ -262,6 +277,10 @@ private:
                 unsigned short port;
             } redis;
         } metastore;
+        struct {
+            std::string curvePublicKey;
+            std::string curveSecretKey;
+        } network;
         struct {
             int numZmqThread;
             bool repairAtProxy;

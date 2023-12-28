@@ -49,7 +49,7 @@ void *ProxyIO::sendChunkRequestToAgent(void *arg) {
         } catch (std::exception &e) {
             ioMeta.socket = new zmq::socket_t(meta.io->_cxt, ZMQ_REQ);
             meta.io->_containerToSocketMap.insert(std::pair<int, zmq::socket_t*>(meta.containerId, ioMeta.socket));
-            Util::setSocketOptions(ioMeta.socket);
+            Util::setSocketOptions(ioMeta.socket, PROXY_TO_AGENT);
             int timeout = Config::getInstance().getFailureTimeout();
             ioMeta.socket->setsockopt(ZMQ_SNDTIMEO, timeout);
             ioMeta.socket->setsockopt(ZMQ_RCVTIMEO, timeout);

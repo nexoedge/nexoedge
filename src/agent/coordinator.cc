@@ -19,14 +19,14 @@ AgentCoordinator::AgentCoordinator(ContainerManager *cm) : _cm(cm), Coordinator(
 
     for (int i = 0; i < _numProxy; i++) {
         _proxy[i] = new zmq::socket_t(_cxt, ZMQ_REQ);
-        Util::setSocketOptions(_proxy[i]);
+        Util::setSocketOptions(_proxy[i], AGENT_TO_PROXY);
         _proxy[i]->setsockopt(ZMQ_RCVTIMEO, timeout);
         _proxy[i]->setsockopt(ZMQ_LINGER, timeout);
         _mworkers[i] = new MonitorProxyWorker(this);
     }
 
     _socket = new zmq::socket_t(_cxt, ZMQ_REP);
-    Util::setSocketOptions(_socket);
+    Util::setSocketOptions(_socket, AGENT_TO_PROXY, /* isServer */ true);
     _socket->setsockopt(ZMQ_RCVTIMEO, timeout);
     _isListening = false;
     _isMonitoring = false;

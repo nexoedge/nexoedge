@@ -4,11 +4,15 @@
 
 if ( BUILD_UTILS OR BUILD_PROXY )
     add_executable( ncloud-reporter zmq_reporter.c )
+    add_executable( ncloud-curve-keypair-generator zmq_curve_key_pair_generator.cc )
 else ( BUILD_UTILS OR BUILD_PROXY )
     add_executable( ncloud-reporter EXCLUDE_FROM_ALL zmq_reporter.c )
+    add_executable( ncloud-curve-keypair-generator EXCLUDE_FROM_ALL zmq_curve_key_pair_generator.cc )
 endif ( BUILD_UTILS OR BUILD_PROXY )
 add_dependencies( ncloud-reporter hiredis-cli )
 target_link_libraries( ncloud-reporter ncloud_zmq_client ${GLIB2_LIBRARIES} hiredis json-c )
+add_dependencies( ncloud-curve-keypair-generator zero-mq )
+target_link_libraries( ncloud-curve-keypair-generator zmq )
 
 
 ##################
@@ -19,6 +23,7 @@ include ( ${PROJECT_SOURCE_DIR}/cmake/InstallFunc.cmake )
 
 function ( ncloud_build_utils component )
     add_ncloud_install_target( ncloud-reporter ${component} )
+    add_ncloud_install_target( ncloud-curve-keypair-generator ${component} )
     add_ncloud_install_target( ncloud_zmq_client ${component} )
     add_ncloud_sample_config( ${component} )
     add_ncloud_install_libs( "lib(zmq|hiredis|glog)" ${component} )

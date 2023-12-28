@@ -18,7 +18,7 @@ ProxyCoordinator::ProxyCoordinator(std::map<int, std::string> *containerToAgentM
     
     // socket to listen incoming requests
     _socket = new zmq::socket_t (_cxt, ZMQ_REP);
-    Util::setSocketOptions(_socket);
+    Util::setSocketOptions(_socket, PROXY_TO_AGENT, /* isServer */ true);
     // avoid infinite wait
     _socket->setsockopt(ZMQ_RCVTIMEO, Config::getInstance().getEventProbeTimeout());
     // rotating placement (if enabled)
@@ -507,7 +507,7 @@ bool ProxyCoordinator::registerAgent(CoordinatorEvent &event) {
         // start a connection for sending requests to Agents
         zmq::socket_t *as = new zmq::socket_t(_cxt, ZMQ_REQ);
         int timeout = Config::getInstance().getFailureTimeout();
-        Util::setSocketOptions(as);
+        Util::setSocketOptions(as, PROXY_TO_AGENT);
         as->setsockopt(ZMQ_RCVTIMEO, timeout);
         as->setsockopt(ZMQ_SNDTIMEO, timeout);
         as->setsockopt(ZMQ_LINGER, timeout);
@@ -551,7 +551,7 @@ void ProxyCoordinator::registerPresetAgents() {
         // start a connection for sending requests to Agents
         zmq::socket_t as = zmq::socket_t(_cxt, ZMQ_REQ);
         int timeout = Config::getInstance().getFailureTimeout();
-        Util::setSocketOptions(&as);
+        Util::setSocketOptions(&as, PROXY_TO_AGENT);
         as.setsockopt(ZMQ_RCVTIMEO, timeout);
         as.setsockopt(ZMQ_SNDTIMEO, timeout);
         CoordinatorEvent event;

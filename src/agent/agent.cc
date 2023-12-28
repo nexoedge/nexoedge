@@ -67,7 +67,7 @@ void *Agent::handleChunkEvent(void *arg) {
     
     // connect to the worker proxy socket
     zmq::socket_t socket(self->_cxt, ZMQ_REP);
-    Util::setSocketOptions(&socket);
+    Util::setSocketOptions(&socket, AGENT_TO_PROXY);
     try {
         socket.connect(self->_workerAddr);
     } catch (zmq::error_t &e) {

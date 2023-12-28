@@ -12,6 +12,7 @@ RUN apt update \
       libboost-random1.74.0 \
       libboost-locale1.74.0 \
       libboost-regex1.74.0 \
+      libsodium23 \
       net-tools \  
     && rm -rf /var/lib/apt/lists/* 
 
