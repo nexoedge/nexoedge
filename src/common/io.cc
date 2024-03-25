@@ -386,9 +386,11 @@ std::string IO::getAddrIP(std::string addr) {
 
 
 void *IO::sendChunkRequestToAgent(void *arg) {
+    const Config &config = Config::getInstance();
     RequestMeta &meta = *((RequestMeta*) arg);
 
-    bool reuse = meta.isFromProxy && Config::getInstance().reuseDataConn();
+    bool reuse = meta.isFromProxy && config.reuseDataConn();
+    MessageDirection msgDirection = meta.isFromProxy? PROXY_TO_AGENT : AGENT_TO_AGENT;
     zmq::socket_t *socket = 0;
     try {
         if (reuse) {
@@ -397,7 +399,7 @@ void *IO::sendChunkRequestToAgent(void *arg) {
             // new a socket
             socket = new zmq::socket_t(*meta.cxt, ZMQ_REQ);
             // setup socket options (TCP keep alive and Agent timeout)
-            Util::setSocketOptions(socket);
+            Util::setSocketOptions(socket, msgDirection);
             int timeout = Config::getInstance().getFailureTimeout();
             socket->setsockopt(ZMQ_SNDTIMEO, timeout);
             socket->setsockopt(ZMQ_RCVTIMEO, timeout);

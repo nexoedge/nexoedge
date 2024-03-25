@@ -60,6 +60,20 @@ int main(int argc, char **argv) {
     FLAGS_minloglevel = config.getLogLevel();
     FLAGS_logbuflevel = -1;
 
+    config.printConfig();
+
+    // check the security keys for network communication
+    if (config.useCurve()
+        && (
+            config.getProxyCurvePublicKey() == nullptr
+            || config.getAgentCurvePublicKey() == nullptr
+            || config.getAgentCurveSecretKey() == nullptr
+        )
+    ) {
+        printf("Insufficient keys for secure network communication!\n");
+        LOG(ERROR) << "Insufficient keys for secure network communication!";
+        return 1;
+    }
     // new an agent
     agent = new Agent();
 

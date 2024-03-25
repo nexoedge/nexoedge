@@ -28,6 +28,8 @@ ExternalProject_Add (
         -DBUILD_STATIC=ON
         -DBUILD_TESTS=OFF
         -DCMAKE_BUILD_TYPE=Release
+        -DENABLE_CURVE=ON
+        -DWITH_LIBSODIUM=ON
     INSTALL_DIR ""
     INSTALL_COMMAND make install
 )

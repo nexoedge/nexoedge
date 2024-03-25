@@ -104,6 +104,7 @@ void Config::setConfigPath (const char *generalPath, const char *proxyPath, cons
         _general.retry.intv = std::max(readInt(_generalPt, "retry.interval"), 0);
 
         // network
+        const int curveKeySize = 41;
         _general.network.listenToAllInterfaces = readBool(_generalPt, "network.listen_all_ips");
         _general.network.tcpKeepAlive.enabled = readBool(_generalPt, "network.tcp_keep_alive");
         _general.network.tcpKeepAlive.idle = readInt(_generalPt, "network.tcp_keep_alive_idle");
@@ -120,6 +121,19 @@ void Config::setConfigPath (const char *generalPath, const char *proxyPath, cons
             _general.network.tcpBuffer = -1; 
         else if (_general.network.tcpBuffer < (1 << 20))
             _general.network.tcpBuffer = 1 << 20;
+        _general.network.useCurve = readBool(_generalPt, "network.use_curve");
+        _general.network.proxy.curvePublicKey = readBytesFromFile(readString(_generalPt, "network.proxy_curve_public_key_file"), curveKeySize);
+        _general.network.proxy.curveSecretKey = readBytesFromFile(readString(_generalPt, "network.proxy_curve_secret_key_file"), curveKeySize);
+        _general.network.agent.curvePublicKey = readBytesFromFile(readString(_generalPt, "network.agent_curve_public_key_file"), curveKeySize);
+        _general.network.agent.curveSecretKey = readBytesFromFile(readString(_generalPt, "network.agent_curve_secret_key_file"), curveKeySize);
+        if (_general.network.useCurve
+            && (_general.network.proxy.curvePublicKey == nullptr
+                || _general.network.agent.curvePublicKey == nullptr
+            )
+        ) {
+            LOG(ERROR) << "Insufficient public keys for network communication.";
+            exit(-1);
+        }
 
         // data integrity
         _general.dataIntegrity.verifyChunkChecksum = readBool(_generalPt, "data_integrity.verify_chunk_checksum");
@@ -438,6 +452,31 @@ int Config::getTcpKeepAliveCnt() const {
 int Config::getTcpBufferSize() const {
     assert(!_generalPt.empty());
     return _general.network.tcpBuffer;
+}
+
+int Config::useCurve() const {
+    assert(!_generalPt.empty());
+    return _general.network.useCurve;
+}
+
+const char *Config::getAgentCurvePublicKey() const {
+    assert(!_agentPt.empty());
+    return _general.network.agent.curvePublicKey;
+}
+
+const char *Config::getAgentCurveSecretKey() const {
+    assert(!_agentPt.empty());
+    return _general.network.agent.curveSecretKey;
+}
+
+const char *Config::getProxyCurvePublicKey() const {
+    assert(!_proxyPt.empty());
+    return _general.network.proxy.curvePublicKey;
+}
+
+const char *Config::getProxyCurveSecretKey() const {
+    assert(!_proxyPt.empty());
+    return _general.network.proxy.curveSecretKey;
 }
 
 int Config::getEventProbeTimeout() const {
@@ -911,6 +950,11 @@ void Config::printConfig() const {
         "   - TCP keep alive interval : %d\n"
         "   - TCP keep alive count    : %d\n"
         "   - TCP buffer size         : %dB\n"
+        "   - ZeroMQ CURVE            : %s\n"
+        "     - Proxy public key      : %s\n"
+        "     - Proxy secret key      : %s\n"
+        "     - Agent public key      : %s\n"
+        "     - Agent secret key      : %s\n"
         " - Data Integrity\n"
         "   - Verify chunk checksum   : %s\n"
         " - Failure Detection\n"
@@ -930,6 +974,11 @@ void Config::printConfig() const {
         , getTcpKeepAliveIntv()
         , getTcpKeepAliveCnt()
         , getTcpBufferSize()
+        , useCurve()? "On" : "Off"
+        , getProxyCurvePublicKey()? "(provided)" : "(n/a)"
+        , getProxyCurveSecretKey()? "(provided)" : "(n/a)"
+        , getAgentCurvePublicKey()? "(provided)" : "(n/a)"
+        , getAgentCurveSecretKey()? "(provided)" : "(n/a)"
         , verifyChunkChecksum()? "true" : "false"
         , getFailureTimeout()
         , getEventProbeTimeout()
@@ -1183,6 +1232,31 @@ double Config::readFloat (const boost::property_tree::ptree &pt, const char *key
 std::string Config::readString (const boost::property_tree::ptree &pt, const char *key) const {
     assert(!pt.empty());
     return pt.get<std::string>(key);
+}
+
+char* Config::readBytesFromFile (const std::string filepath, int numBytesToRead) const {
+    // skip reading if no filename is available
+    if (filepath.empty()) {
+        LOG(ERROR) << "Empty filepath for read!";
+        return nullptr;
+    }
+    // open the file for reading
+    std::ifstream sourceFile (filepath, std::ios::binary | std::ios::in); 
+    // skip reading if file openning fails
+    if (!sourceFile.is_open()) {
+        LOG(ERROR) << "Failed to open the file [" << filepath << "] for read!";
+        return nullptr;
+    }
+    // read bytes into a buffer and return the buffer
+    char *buf = new char[numBytesToRead];
+    sourceFile.read(buf, numBytesToRead);
+    bool failed = sourceFile.fail();
+    if (failed) {
+        LOG(ERROR) << "Failed to read " << numBytesToRead << " bytes from the file [" << filepath << "] (only " << sourceFile.tellg() << " bytes available)!";
+        delete [] buf;
+    }
+    sourceFile.close();
+    return failed? nullptr : buf;
 }
 
 unsigned short Config::parseContainerType(std::string typeName) const {

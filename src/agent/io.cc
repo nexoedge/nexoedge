@@ -28,7 +28,7 @@ void AgentIO::run(const char *workerAddr) {
 
     // frontend, bind to interface(s) and listen to Proxy requests
     _frontend = new zmq::socket_t(*_cxt, ZMQ_ROUTER);
-    Util::setSocketOptions(_frontend);
+    Util::setSocketOptions(_frontend, AGENT_TO_PROXY, /* isServer */ true);
     _frontend->bind(agentAddr);
 
     // backend, bind to internal address for distributing events to workers

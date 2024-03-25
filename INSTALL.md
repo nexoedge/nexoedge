@@ -13,7 +13,8 @@ The recommended platforms are [Ubuntu 22.04 LTS][ubuntu2204] 64-bit Server, with
   - libevent, version 2.1.12
   - OpenSSL (`libssl-dev`), version 3.0.2
   - Glib-2.0, version 2.72.4
-  - nlohmann json (`libnlohmann-json3-dev`), version 3.10.5
+  - nlohmann json (`nlohmann-json3-dev`), version 3.10.5
+  - libsodium (`libsodium-dev`), version 1.0.16
 - Coding-related
   - Netwide Assembler (`nasm`), v2.11.01 or above, for [Intel(R) Intelligent Storage Acceleration Library](https://github.com/01org/isa-l/blob/master/README.md)
   - `autoconf`
@@ -26,7 +27,6 @@ The recommended platforms are [Ubuntu 22.04 LTS][ubuntu2204] 64-bit Server, with
 - Container-related
   - APR (`libapr1-dev`), version 1.7.0, for Aliyun
   - APR-Util (`libaprutil1-dev`), version 1.6.1, for Aliyun
-  - Cpprest (`libcpprest-dev`), version 2.10.18, for Azure
   - Boost libraries (`libboost-log-dev`, `libboost-random-dev`, `libboost-locale-dev`, `libboost-regex-dev`), version 1.74.0, for Azure
   - `libxml2-dev`, version 2.9.13, for Azure
   - `uuid-dev`, version 2.37.2, for Azure
@@ -37,7 +37,7 @@ To install all the software on the platform,
 
 ```bash
 sudo apt update
-sudo apt install -y cmake g++ libssl-dev libboost-filesystem-dev libboost-system-dev libboost-timer-dev libboost-log-dev libboost-random-dev libboost-locale-dev libboost-regex-dev autoconf libtool nasm pkg-config libevent-dev uuid-dev redis-server redis-tools libxml2-dev libcpprest-dev libaprutil1-dev libapr1-dev libglib2.0-dev libjson-c-dev unzip curl nlohmann-json3-dev libcurl-ocaml-dev
+sudo apt install -y cmake g++ libssl-dev libboost-filesystem-dev libboost-system-dev libboost-timer-dev libboost-log-dev libboost-random-dev libboost-locale-dev libboost-regex-dev autoconf libtool nasm pkg-config libevent-dev uuid-dev redis-server redis-tools libxml2-dev libcpprest-dev libaprutil1-dev libapr1-dev libglib2.0-dev libjson-c-dev unzip curl nlohmann-json3-dev libsodium-dev
 ```
 
 ### Configure Build Environment
@@ -72,7 +72,7 @@ Prepare the build environment,
 
 ### Build
 
-The key entities `agent`, `proxy`, `ncloud-reporter` are built by default under the `bin` folder,
+The key entities `agent`, `proxy`, and `ncloud-reporter` are built by default under the `bin` folder, as well as the utility `ncloud-curve-keypair-generator`
 
 Build all entities 
 
@@ -142,6 +142,37 @@ To install the packages,
    sudo dpkg -i nexoedge-1.0-amd64-proxy.deb
    sudo apt install -f -y
    ```
+
+### Secure Proxy-Agent Network Communication
+
+Nexoedge leverages the CURVE mechanism in ZeroMQ to provide secure communication between agents and proxies. Following are the steps to enable secure communication.
+
+1. Generate a key pair for proxies and another key pair for agents using the provided tool `ncloud-curve-keypair-generator`
+   - For package installation,
+     ```bash
+     ncloud-curve-keypair-generator 
+     ```
+   - For source code compilation,
+     ```bash
+     bin/ncloud-curve-keypair-generator 
+     ```
+
+1. Copy the key files to the working directories of agents and proxies (where the binaries are run from, e.g., `/usr/lib/ncloud/current` for an installed package)
+   - For agents: (i) the agent public key (`agent_pkey`), (ii) the agent secret key (`agent_skey`), and (iii) the proxy public key (`proxy_pkey`)
+   - For proxies: (i) the proxy public key (`proxy_pkey`), (ii) the proxy secret key (`proxy_skey`), and (iii) the agent public key (`agent_pkey`)
+
+1. Update the general configuration as follows
+   - For both agents and proxies,
+     - Set `[network] > use_curve` to 1
+   - For agents,
+     - Set `[network] > agent_curve_public_key` to `agent_pkey`
+     - Set `[network] > agent_curve_secret_key` to `agent_skey`
+     - Set `[network] > proxy_curve_public_key` to `proxy_pkey`
+   - For proxies,
+     - Set `[network] > proxy_curve_public_key` to `proxy_pkey`
+     - Set `[network] > proxy_curve_secret_key` to `proxy_skey`
+     - Set `[network] > agent_curve_public_key` to `agent_pkey`
+
 
 ## Samba Installation
 

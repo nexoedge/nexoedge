@@ -167,6 +167,14 @@ enum MetaStoreType {
     UNKNOWN_METASTORE
 };
 
+enum MessageDirection {
+    PROXY_TO_AGENT,
+    AGENT_TO_PROXY,
+    AGENT_TO_AGENT,
+
+    UNKNOWN_MSG_DIRECTION
+};
+
 extern const char *CodingSchemeName[];
 extern const char EmptyStringMD5[];
 

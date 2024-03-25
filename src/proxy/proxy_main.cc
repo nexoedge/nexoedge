@@ -85,6 +85,19 @@ int main(int argc, char **argv) {
 
     config.printConfig();
 
+    // check the security keys for network communication
+    if (config.useCurve()
+        && (
+            config.getAgentCurvePublicKey() == nullptr
+            || config.getProxyCurvePublicKey() == nullptr
+            || config.getProxyCurveSecretKey() == nullptr
+        )
+    ) {
+        printf("Insufficient keys for secure network communication!\n");
+        LOG(ERROR) << "Insufficient keys for secure network communication!";
+        return 1;
+    }
+
     // create proxy and interface
     std::map<int, std::string> map; // container to agent map
     coordinator = new ProxyCoordinator(&map); // proxy coordinator

@@ -41,6 +41,11 @@ In `general.ini`,
   - `tcp_keep_alive_intv`: Time interval between TCP keep-alive packets (in seconds)
   - `tcp_keep_alive_cnt`: Number of keep-alive packets to sent before giving up an unresponsive connection 
   - `tcp_buffer_size`: TCP Send/Receive buffer size (in bytes)
+  - `use_curve`: Whether to enable the CURVE mechanism for all connections between proxies and agents for security
+  - `agent_curve_public_key_file`: Agent permanent public key file for ZeroMQ CURVE (essential for agent and proxy)
+  - `agent_curve_secret_key_file`: Agent permanent secret key file for ZeroMQ CURVE (essential for agent)
+  - `proxy_curve_public_key_file`: Proxy permanent public key file for ZeroMQ CURVE (essential for agent and proxy)
+  - `proxy_curve_secret_key_file`: Proxy permanent secret key file for ZeroMQ CURVE (essential for proxy)
 - `proxy`: Proxy
   - ``num_proxy``: Number of proxies to connect
 - `proxy[01-99]`: Proxy information
