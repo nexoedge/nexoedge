@@ -11,6 +11,7 @@ RUN apt update \
       libarchive13 \
       libacl1 \
       libldap-2.5-0 \
+      libsodium23 \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # expose ports used by ncloud proxy and cifs
