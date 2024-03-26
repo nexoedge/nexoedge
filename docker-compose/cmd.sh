@@ -3,7 +3,9 @@
 docker="sudo -E docker"
 docker_compose="${docker} compose"
 
-compose_file="nexoedge-cluster.yml"
+proxy_compose_file="nexoedge-proxy.yaml"
+agents_compose_file="nexoedge-agents.yaml"
+cluster_compose_file="nexoedge-cifs-cluster.yaml"
 project="nexoedge-example"
 env_file=".env"
 
@@ -15,19 +17,26 @@ portal_pass="admin"
 source ${env_file}
 
 create_directories() {
-  for d in $(grep source ${compose_file} | sed 's/.* source: \(.*\)/\1/g'); do
+  for d in $(grep source ${proxy_compose_file} ${agents_compose_file} ${cluster_compose_file} | sed 's/.* source: \(.*\)/\1/g'); do
     d=$(eval echo ${d})
+    if [ -f ${d} ]; then continue; fi
     sudo mkdir -p ${d}
     sudo chmod 777 ${d}
   done
 }
 
 stop_all() {
-  ${docker_compose} --env-file ${env_file} -p ${project} -f ${compose_file} down
+  echo "> Stop all containers ..."
+  ${docker_compose} --env-file ${env_file} -p ${project} -f ${cluster_compose_file} down
+  ${docker} network rm ${NEXOEDGE_NETWORK}
+  echo "> Stopped all containers."
 }
 
 start_all() {
-  ${docker_compose} --env-file ${env_file} -p ${project} -f ${compose_file} up -d
+  echo "> Starting all containers..."
+  ${docker} network create ${NEXOEDGE_NETWORK}
+  ${docker_compose} --env-file ${env_file} -p ${project} -f ${cluster_compose_file} up -d
+  echo "> Started all containers."
 }
 
 usage() {
@@ -38,6 +47,7 @@ usage() {
   echo "     - 'term': Shut down the whole cluster."
   echo "     - 'report': Show the cluster status."
   echo "     - 'checkdb': Show the keys in the metadata and statistics stores."
+  echo "     - 'test': Run the test script that generates, uploads, and downloads random-byte files."
 }
 
 if [ "$1" == "show" ]; then
@@ -67,6 +77,9 @@ elif [ "$1" == "report" ]; then
 elif [ "$1" == "checkdb" ]; then
   ${docker} exec ${project}-metastore-1 redis-cli KEYS \*
   ${docker} exec ${project}-statsdb-1 redis-cli KEYS \*
+
+elif [ "$1" == "test" ]; then
+  ./upload-download-test.sh
 
 else
   usage

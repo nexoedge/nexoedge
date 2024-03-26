@@ -1,0 +1,82 @@
+name: nexoedge-agents
+services:
+  storage-node-01:
+    image: ${NEXOEDGE_AGENT_IMAGE_NAME}:${TAG}
+    #ports:
+    #  - "57003:57003"
+    #  - "57004:57004"
+    environment:
+      NCLOUD_AGENT_Agent_Num_containers: "2"
+      NCLOUD_AGENT_Container01_Id: "1"
+      NCLOUD_AGENT_Container02_Id: "2"
+      NCLOUD_AGENT_Container01_Capacity: "107374182400"
+      NCLOUD_AGENT_Container02_Capacity: "107374182400"
+      NCLOUD_AGENT_Container01_Url: "/data01"
+      NCLOUD_AGENT_Container02_Url: "/data02"
+      NCLOUD_GENERAL_Proxy01_Ip: "proxy"
+      NCLOUD_GENERAL_Network_Use_curve: "1"
+      NCLOUD_GENERAL_Network_Agent_curve_public_key_file: "/run/secrets/agent_pkey"
+      NCLOUD_GENERAL_Network_Agent_curve_secret_key_file: "/run/secrets/agent_skey"
+      NCLOUD_GENERAL_Network_Proxy_curve_public_key_file: "/run/secrets/proxy_pkey"
+    volumes:
+      - type: bind
+        source: ${NEXOEDGE_DATA_DIR}/container01
+        target: /data01
+      - type: bind
+        source: ${NEXOEDGE_DATA_DIR}/container02
+        target: /data02
+    secrets:
+      - agent_pkey
+      - agent_skey
+      - proxy_pkey
+    networks:
+      - nexoedge
+    depends_on:
+      - proxy
+
+  storage-node-02:
+    image: ${NEXOEDGE_AGENT_IMAGE_NAME}:${TAG}
+    #ports:
+    #  - "57003:57003"
+    #  - "57004:57004"
+    environment:
+      NCLOUD_AGENT_Agent_Num_containers: "2"
+      NCLOUD_AGENT_Container01_Id: "3"
+      NCLOUD_AGENT_Container02_Id: "4"
+      NCLOUD_AGENT_Container01_Capacity: "107374182400"
+      NCLOUD_AGENT_Container02_Capacity: "107374182400"
+      NCLOUD_AGENT_Container01_Url: "/data01"
+      NCLOUD_AGENT_Container02_Url: "/data02"
+      NCLOUD_GENERAL_Proxy01_Ip: "proxy"
+      NCLOUD_GENERAL_Network_Use_curve: "1"
+      NCLOUD_GENERAL_Network_Agent_curve_public_key_file: "/run/secrets/agent_pkey"
+      NCLOUD_GENERAL_Network_Agent_curve_secret_key_file: "/run/secrets/agent_skey"
+      NCLOUD_GENERAL_Network_Proxy_curve_public_key_file: "/run/secrets/proxy_pkey"
+    volumes:
+      - type: bind
+        source: ${NEXOEDGE_DATA_DIR}/container03
+        target: /data01
+      - type: bind
+        source: ${NEXOEDGE_DATA_DIR}/container04
+        target: /data02
+    secrets:
+      - agent_pkey
+      - agent_skey
+      - proxy_pkey
+    networks:
+      - nexoedge
+    depends_on:
+      - proxy
+
+secrets:
+  agent_pkey:
+    file: comm_ssl/agent_pkey
+  agent_skey:
+    file: comm_ssl/agent_skey
+  proxy_pkey:
+    file: comm_ssl/proxy_pkey
+
+networks:
+  nexoedge:
+    name: nexoedge-network
+    external: true

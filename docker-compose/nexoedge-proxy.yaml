@@ -1,0 +1,88 @@
+name: nexoedge-proxy
+services:
+  metastore:
+    image: redis:5.0
+    volumes:
+      - type: bind
+        source: ${NEXOEDGE_DATA_DIR}/metadata
+        target: /data
+    networks:
+      - nexoedge
+
+  statsdb:
+    image: redis:5.0
+    volumes:
+      - type: bind
+        source: ${NEXOEDGE_DATA_DIR}/statsdb
+        target: /data
+    networks:
+      - nexoedge
+
+  proxy:
+    image: ${NEXOEDGE_PROXY_IMAGE_NAME}:${TAG}
+    ports:
+      - "57002:57002"
+    environment:
+      NCLOUD_PROXY_Metastore_Ip: "metastore"
+      NCLOUD_PROXY_Reporter_db_Ip: "statsdb"
+      NCLOUD_PROXY_Reporter_db_Port: "6379"
+      NCLOUD_PROXY_Dedup_Enabled: "0"
+      NCLOUD_GENERAL_Network_Use_curve: "1"
+      NCLOUD_GENERAL_Network_Proxy_curve_public_key_file: "/run/secrets/proxy_pkey"
+      NCLOUD_GENERAL_Network_Proxy_curve_secret_key_file: "/run/secrets/proxy_skey"
+      NCLOUD_GENERAL_Network_Agent_curve_public_key_file: "/run/secrets/agent_pkey"
+    secrets:
+      - proxy_pkey
+      - proxy_skey
+      - agent_pkey
+    networks:
+      - nexoedge
+    depends_on:
+      - metastore
+      - statsdb
+
+  reporter:
+    image: ${NEXOEDGE_REPORTER_IMAGE_NAME}:${TAG}
+    environment:
+      NCLOUD_GENERAL_Proxy01_Ip: "proxy"
+      NCLOUD_PROXY_Reporter_db_Ip: "statsdb"
+      NCLOUD_PROXY_Reporter_db_Port: "6379"
+    networks:
+      - nexoedge
+    depends_on:
+      - proxy
+      - statsdb
+
+  portal-backend:
+    image: ${NEXOEDGE_PORTAL_BACKEND_IMAGE_NAME}:${TAG}
+    environment:
+      REDIS_HOST: statsdb
+      REDIS_PORT: 6379
+    networks:
+      - nexoedge
+    depends_on:
+      - statsdb
+
+  portal-frontend:
+    image: ${NEXOEDGE_PORTAL_FRONTEND_IMAGE_NAME}:${TAG}
+    ports:
+      - "8080:80"
+    environment:
+      WEBDIS_REDIRECT_ADDR: "portal-backend:7379"
+    networks:
+      - nexoedge
+    depends_on:
+      - portal-backend
+
+secrets:
+  proxy_pkey:
+    file: comm_ssl/proxy_pkey
+  proxy_skey:
+    file: comm_ssl/proxy_skey
+  agent_pkey:
+    file: comm_ssl/agent_pkey
+
+networks:
+  nexoedge:
+    name: nexoedge-network
+    external: true

@@ -1,0 +1,27 @@
+include:
+  - ./nexoedge-proxy.yaml
+  - ./nexoedge-agents.yaml
+
+services:
+  cifs:
+    image: ${NEXOEDGE_CIFS_IMAGE_NAME}:${TAG}
+    ports:
+      - "445:445"
+    volumes:
+      - type: bind
+        source: ${NEXOEDGE_DATA_DIR}/cifs-metadata
+        target: /usr/local/samba/var
+      - type: bind
+        source: ${NEXOEDGE_DATA_DIR}/cifs-share-metadata
+        target: /smb/nexoedge
+    networks:
+      - nexoedge
+    depends_on:
+      - metastore
+      - statsdb
+      - proxy
+      - storage-node-01
+      - storage-node-02
+      - reporter
+      - portal-backend
+      - portal-frontend
