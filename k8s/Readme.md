@@ -40,7 +40,7 @@ The 'app:nexoedge-cifs' application runs a CIFS service which exposes the CIFS s
 
 The 'app:nexoedge-proxy' application runs a Nexoedge proxy, which connects to the Redis in the 'app:nexoedge-metastore' application through the 'svc:nexoedge-metastore' service. It also receives storage requests from the 'app:nexoedge-cifs' application through the 'svc:nexoedge-internal-proxy' service.
 
-Each of the 'app:nexoedge-agent-1' and 'app:nexoedge-agent-2' application runs a Nexoedge agent (with two storage containers), which registers to the Nexoedge proxy through the 'svc:nexoedge-internal-proxy' service. They exposes the interface for data access to the Nexoedge proxy through 'svc:nexoedge-agent-1' and 'svc:nexoedge-agent-2' services.
+Each of the 'app:nexoedge-agent-1' and 'app:nexoedge-agent-2' application runs a Nexoedge agent (with two storage containers), which registers to the Nexoedge proxy through the 'svc:nexoedge-internal-proxy' service. They expose the data access interfaces to the Nexoedge proxy through 'svc:nexoedge-agent-1' and 'svc:nexoedge-agent-2' services.
 
 
 ## Pre-requisites
@@ -56,9 +56,11 @@ To install `Kind` and `kubectl`, refer to the [Kind official installation guide]
 The example requires port 445 of the host to be available for the CIFS service. If you want to host the service on another port, modify the value of 'hostPort' in `kind-cluster.yaml` to the port number to use. For file modify the value of the variable `port` in `upload-download-test.sh` to the port to use.
 
 
-## Procedure
+## How to run the example 
 
-1. Build and run the cluster
+### Start the cluster
+
+1. Build and run the Kind and Nexoedge cluster
    ```bash
    ./cmd.sh create
    ```
@@ -69,12 +71,39 @@ The example requires port 445 of the host to be available for the CIFS service. 
    # press Ctrl+C to exit after all pods are in the "Running" state
    ```
 
-
-## Storage Service Test
+### Run the Storage Service Test
 
 1. Upload and download files to the default CIFS share
    ```bash
    ./upload-download-test.sh
+   ```
+
+### Stop the cluster
+
+1. Stop the Nexoedge cluster (and leave the Kind cluster behind)
+   ```bash
+   ./cmd.sh term
+   ```
+
+### Start / Restart the cluster
+
+1. Start the Nexoedge cluster after stopping (or restart the Nexoedge cluster)
+   ```bash
+   ./cmd.sh start
+   ```
+
+### Remove the cluster
+
+1. Remove the Kind and Neoxedge cluster
+   ```bash
+   ./cmd.sh clean
+   ```
+
+### Other commands
+
+1. Check by running the script without any arguments.
+   ```bash
+   ./cmd.sh
    ```
 
 
