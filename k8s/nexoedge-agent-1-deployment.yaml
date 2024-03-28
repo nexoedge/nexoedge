@@ -1,0 +1,119 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nexoedge-agent-1
+  labels:
+    app: nexoedge-agent-1
+  namespace: nexoedge
+spec:
+  selector:
+    matchLabels:
+      app: nexoedge-agent-1
+  template:
+    metadata:
+      labels:
+        app: nexoedge-agent-1
+    spec:
+      initContainers:
+      - name: data-dir-init-for-hostpath-mount
+        image: busybox
+        command: ['/bin/sh', '-c', "chmod -R 777 /data*" ]
+        volumeMounts:
+          - mountPath: "/data01"
+            name: nexoedge-agent-pv-storage-01
+          - mountPath: "/data02"
+            name: nexoedge-agent-pv-storage-02
+      containers:
+      - name: agent
+        image: helenchw/nexoedge-agent:20240326
+        env:
+        - name: NCLOUD_GENERAL_Log_Glog_to_console
+          value: "1"
+        - name: NCLOUD_GENERAL_Network_Use_curve
+          value: "1"
+        - name: NCLOUD_GENERAL_Network_Proxy_curve_public_key_file
+          value: "/ssl-keys/proxy-ssl-public-key"
+        - name: NCLOUD_GENERAL_Network_Agent_curve_public_key_file
+          value: "/ssl-keys/agent-ssl-public-key"
+        - name: NCLOUD_GENERAL_Network_Agent_curve_secret_key_file
+          value: "/ssl-keys/agent-ssl-secret-key"
+        - name: NCLOUD_GENERAL_Proxy01_Ip
+          valueFrom:
+            configMapKeyRef:
+              name: nexoedge-agent-1
+              key: proxy01-ip
+        - name: NCLOUD_GENERAL_Proxy01_Coord_port
+          valueFrom:
+            configMapKeyRef:
+              name: nexoedge-agent-1
+              key: proxy01-port
+        - name: NCLOUD_AGENT_Agent_Ip
+          valueFrom:
+            configMapKeyRef:
+              name: nexoedge-agent-1
+              key: agent-ip
+        - name: NCLOUD_AGENT_Agent_Port
+          valueFrom:
+            configMapKeyRef:
+              name: nexoedge-agent-1
+              key: agent-dport
+        - name: NCLOUD_AGENT_Agent_Coord_port
+          valueFrom:
+            configMapKeyRef:
+              name: nexoedge-agent-1
+              key: agent-cport
+        - name: NCLOUD_AGENT_Agent_Num_containers
+          valueFrom:
+            configMapKeyRef:
+              name: nexoedge-agent-1
+              key: num-containers
+        - name: NCLOUD_AGENT_Container01_Url
+          value: "/data01"
+        - name: NCLOUD_AGENT_Container01_Capacity
+          valueFrom: 
+            configMapKeyRef:
+              name: nexoedge-agent-1
+              key: container-1-capacity
+        - name: NCLOUD_AGENT_Container01_Id
+          valueFrom: 
+            configMapKeyRef:
+              name: nexoedge-agent-1
+              key: container-1-id
+        - name: NCLOUD_AGENT_Container02_Url
+          value: "/data02"
+        - name: NCLOUD_AGENT_Container02_Capacity
+          valueFrom: 
+            configMapKeyRef:
+              name: nexoedge-agent-1
+              key: container-2-capacity
+        - name: NCLOUD_AGENT_Container02_Id
+          valueFrom: 
+            configMapKeyRef:
+              name: nexoedge-agent-1
+              key: container-2-id
+        volumeMounts:
+          - mountPath: "/data01"
+            name: nexoedge-agent-pv-storage-01
+          - mountPath: "/data02"
+            name: nexoedge-agent-pv-storage-02
+          - mountPath: "/ssl-keys"
+            name: ssl-keys
+            readOnly: true
+        securityContext:
+          allowPrivilegeEscalation: false
+          privileged: false
+          runAsNonRoot: true
+          runAsUser: 1000
+      volumes:
+        - name: nexoedge-agent-pv-storage-01
+          persistentVolumeClaim:
+            claimName: nexoedge-agent-pvc-01
+        - name: nexoedge-agent-pv-storage-02
+          persistentVolumeClaim:
+            claimName: nexoedge-agent-pvc-02
+        - name: ssl-keys
+          secret:
+            secretName: agent-communication
+      securityContext:
+        fsGroup: 1000
+

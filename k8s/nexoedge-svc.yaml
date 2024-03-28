@@ -1,0 +1,93 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nexoedge-cifs
+  namespace: nexoedge
+spec:
+  #type: LoadBalancer
+  type: NodePort
+  selector:
+    app: nexoedge-cifs
+  ports:
+    - name: cifs
+      protocol: TCP
+      port: 445
+      targetPort: 445
+      nodePort: 30445
+
+--- 
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: nexoedge-metastore
+  namespace: nexoedge
+spec:
+  selector:
+    app: nexoedge-metastore
+  ports:
+    - name: meta
+      protocol: TCP
+      port: 6379
+      targetPort: 6379
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: nexoedge-internal-proxy
+  namespace: nexoedge
+spec:
+  selector:
+    app: nexoedge-proxy
+  ports:
+    - name: cport
+      protocol: TCP
+      port: 57002
+      targetPort: 57002
+    - name: zmq
+      protocol: TCP
+      port: 59001
+      targetPort: 59001
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: nexoedge-internal-agent-1
+  namespace: nexoedge
+spec:
+  selector:
+    app: nexoedge-agent-1
+  ports:
+    - name: dport
+      protocol: TCP
+      port: 57013
+      targetPort: 57013
+    - name: cport
+      protocol: TCP
+      port: 57014
+      targetPort: 57014
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: nexoedge-internal-agent-2
+  namespace: nexoedge
+spec:
+  selector:
+    app: nexoedge-agent-2
+  ports:
+    - name: dport
+      protocol: TCP
+      port: 57023
+      targetPort: 57023
+    - name: cport
+      protocol: TCP
+      port: 57024
+      targetPort: 57024
+
