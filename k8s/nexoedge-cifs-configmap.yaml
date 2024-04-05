@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nexoedge-cifs
+  namespace: nexoedge
+data:
+  smb.conf: |
+    [global]
+    log level = 2
+    security = user
+    keepalive = 60
+    deadtime = 20
+    smb ports = 445
+
+    [nexoedge]
+    path = /smb/nexoedge
+    read only = no
+    vfs object = ncloud
+    ncloud:has_external_read_cache = 0
+    ncloud:has_external_write_cache = 0
+    ncloud:storage_class = standard
+    ncloud:port = 59001
+    ncloud:ip = nexoedge-internal-proxy
+    ncloud:buffer_flush_timeout = 3

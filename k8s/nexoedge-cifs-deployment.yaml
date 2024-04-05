@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nexoedge-cifs
+  labels:
+    app: nexoedge-cifs
+  namespace: nexoedge
+spec:
+  selector:
+    matchLabels:
+      app: nexoedge-cifs
+  template:
+    metadata:
+      labels:
+        app: nexoedge-cifs
+    spec:
+      containers:
+      - name: cifs
+        image: helenchw/nexoedge-cifs:20240326
+        ports:
+        - containerPort: 445
+          name: cifs
+        volumeMounts:
+          # CIFS file metadata and structure
+          - mountPath: "/smb/nexoedge"
+            name: nexoedge-cifs-meta-pv
+          # CIFS configurations
+          - mountPath: "/usr/local/samba/etc/smb.conf"
+            subPath: "smb.conf"
+            readOnly: true
+            name: nexoedge-cifs-config
+        lifecycle:
+          postStart:
+            exec:
+              command: ["/bin/bash", "-c", "useradd -M nexoedge && usermod -L nexoedge; echo -e \"nexoedge\nnexoedge\" | /usr/local/samba/bin/pdbedit -a nexoedge -t"]
+      volumes:
+      - name: nexoedge-cifs-meta-pv
+        persistentVolumeClaim:
+          claimName: nexoedge-cifs-meta-pvc
+      - name: nexoedge-cifs-config
+        configMap:
+          name: nexoedge-cifs

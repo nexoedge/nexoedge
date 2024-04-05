@@ -1,0 +1,62 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nexoedge-agent-pvc-01
+  namespace: nexoedge
+spec:
+  storageClassName: ""
+  volumeName: nexoedge-agent-pv-01
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nexoedge-agent-pvc-02
+  namespace: nexoedge
+spec:
+  storageClassName: ""
+  volumeName: nexoedge-agent-pv-02
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nexoedge-agent-pvc-03
+  namespace: nexoedge
+spec:
+  storageClassName: ""
+  volumeName: nexoedge-agent-pv-03
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nexoedge-agent-pvc-04
+  namespace: nexoedge
+spec:
+  storageClassName: ""
+  volumeName: nexoedge-agent-pv-04
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi
+

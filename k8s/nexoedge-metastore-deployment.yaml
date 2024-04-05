@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nexoedge-metastore
+  labels:
+    app: nexoedge-metastore
+  namespace: nexoedge
+spec:
+  selector:
+    matchLabels:
+      app: nexoedge-metastore
+  template:
+    metadata:
+      labels:
+        app: nexoedge-metastore
+    spec:
+      initContainers:
+      - name: data-dir-init-for-hostpath-mount
+        image: busybox
+        command: ['/bin/sh', '-c', "chmod -R 777 /data*" ]
+        volumeMounts:
+          - mountPath: "/data"
+            name: nexoedge-metastore-pv-storage
+      containers:
+      - name: metastore
+        image: redis:5.0
+        ports:
+        - containerPort: 6379
+          name: redis
+        volumeMounts:
+          - mountPath: "/data"
+            name: nexoedge-metastore-pv-storage
+        securityContext:
+          allowPrivilegeEscalation: false
+          privileged: false
+          runAsNonRoot: true
+          runAsUser: 999
+      volumes:
+        - name: nexoedge-metastore-pv-storage
+          persistentVolumeClaim:
+            claimName: nexoedge-metastore-pvc
+      securityContext:
+        fsGroup: 999

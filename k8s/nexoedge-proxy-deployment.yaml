@@ -1,0 +1,97 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nexoedge-proxy
+  labels:
+    app: nexoedge-proxy
+  namespace: nexoedge
+spec:
+  selector:
+    matchLabels:
+      app: nexoedge-proxy
+  template:
+    metadata:
+      labels:
+        app: nexoedge-proxy
+    spec:
+      initContainers:
+      - name: wait-metastore-init
+        image: busybox
+        command: ['/bin/sh', '-c', "until nslookup nexoedge-metastore.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo Waiting for metastore service to start; sleep 1; done" ]
+        securityContext:
+          allowPrivilegeEscalation: false
+          privileged: false
+          runAsNonRoot: true
+          runAsUser: 1000
+      containers:
+      - name: proxy
+        #image: nexoedge-proxy:latest
+        image: helenchw/nexoedge-proxy:20240326
+        ports:
+        - name: cport
+          containerPort: 57002
+        - name: zmq
+          containerPort: 59001
+        env:
+        - name: NCLOUD_GENERAL_Log_Glog_to_console
+          value: "1"
+        - name: NCLOUD_GENERAL_Network_Use_curve
+          value: "1"
+        - name: NCLOUD_GENERAL_Network_Proxy_curve_public_key_file
+          value: "/ssl-keys/proxy-ssl-public-key"
+        - name: NCLOUD_GENERAL_Network_Proxy_curve_secret_key_file
+          value: "/ssl-keys/proxy-ssl-secret-key"
+        - name: NCLOUD_GENERAL_Network_Agent_curve_public_key_file
+          value: "/ssl-keys/agent-ssl-public-key"
+        - name: NCLOUD_GENERAL_Proxy01_Coord_port
+          valueFrom:
+            configMapKeyRef:
+              name: proxy
+              key: proxy-port
+        - name: NCLOUD_PROXY_Metastore_Ip
+          valueFrom: 
+            configMapKeyRef:
+              name: proxy
+              key: metastore-ip
+        - name: NCLOUD_STORAGECLASS_Standard_F
+          valueFrom:
+            configMapKeyRef:
+              name: proxy
+              key: storage-class-f
+        - name: NCLOUD_STORAGECLASS_Standard_N
+          valueFrom:
+            configMapKeyRef:
+              name: proxy
+              key: storage-class-n
+        - name: NCLOUD_STORAGECLASS_Standard_K
+          valueFrom:
+            configMapKeyRef:
+              name: proxy
+              key: storage-class-k
+        - name: NCLOUD_STORAGECLASS_Standard_Max_chunk_size
+          valueFrom:
+            configMapKeyRef:
+              name: proxy
+              key: storage-class-max-chunk-size
+        - name: NCLOUD_STORAGECLASS_Standard_Coding
+          valueFrom:
+            configMapKeyRef:
+              name: proxy
+              key: storage-class-coding
+        volumeMounts:
+          - name: ssl-keys
+            readOnly: true
+            mountPath: "/ssl-keys"
+        securityContext:
+          allowPrivilegeEscalation: false
+          privileged: false
+          runAsNonRoot: true
+          runAsUser: 1000
+      volumes:
+        - name: ssl-keys
+          secret:
+            secretName: proxy-communication
+      securityContext:
+        fsGroup: 1000
+        runAsNonRoot: true
+

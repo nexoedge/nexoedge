@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: proxy
+  namespace: nexoedge
+data: 
+  storage-class-f: "1"
+  storage-class-n: "4"
+  storage-class-k: "2"
+  storage-class-max-chunk-size: "8388608"
+  storage-class-coding: "rs"
+  metastore-ip: ${NEXOEDGE_METASTORE_SERVICE_HOST}
+  proxy-port: "57002"
