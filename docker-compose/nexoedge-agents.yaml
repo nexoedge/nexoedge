@@ -6,6 +6,7 @@ services:
     #  - "57003:57003"
     #  - "57004:57004"
     environment:
+      NCLOUD_AGENT_Agent_Ip: ${NEXOEDGE_STORAGE_NODE_1_IP}
       NCLOUD_AGENT_Agent_Num_containers: "2"
       NCLOUD_AGENT_Container01_Id: "1"
       NCLOUD_AGENT_Container02_Id: "2"
@@ -13,7 +14,8 @@ services:
       NCLOUD_AGENT_Container02_Capacity: "107374182400"
       NCLOUD_AGENT_Container01_Url: "/data01"
       NCLOUD_AGENT_Container02_Url: "/data02"
-      NCLOUD_GENERAL_Proxy01_Ip: "proxy"
+      NCLOUD_GENERAL_Proxy01_Ip: ${NEXOEDGE_PROXY_IP}
+      NCLOUD_GENERAL_Proxy01_Coord_port: ${NEXOEDGE_PROXY_PORT}
       NCLOUD_GENERAL_Network_Use_curve: "1"
       NCLOUD_GENERAL_Network_Agent_curve_public_key_file: "/run/secrets/agent_pkey"
       NCLOUD_GENERAL_Network_Agent_curve_secret_key_file: "/run/secrets/agent_skey"
@@ -40,6 +42,7 @@ services:
     #  - "57003:57003"
     #  - "57004:57004"
     environment:
+      NCLOUD_AGENT_Agent_Ip: ${NEXOEDGE_STORAGE_NODE_2_IP}
       NCLOUD_AGENT_Agent_Num_containers: "2"
       NCLOUD_AGENT_Container01_Id: "3"
       NCLOUD_AGENT_Container02_Id: "4"
@@ -47,7 +50,8 @@ services:
       NCLOUD_AGENT_Container02_Capacity: "107374182400"
       NCLOUD_AGENT_Container01_Url: "/data01"
       NCLOUD_AGENT_Container02_Url: "/data02"
-      NCLOUD_GENERAL_Proxy01_Ip: "proxy"
+      NCLOUD_GENERAL_Proxy01_Ip: ${NEXOEDGE_PROXY_IP}
+      NCLOUD_GENERAL_Proxy01_Coord_port: ${NEXOEDGE_PROXY_PORT}
       NCLOUD_GENERAL_Network_Use_curve: "1"
       NCLOUD_GENERAL_Network_Agent_curve_public_key_file: "/run/secrets/agent_pkey"
       NCLOUD_GENERAL_Network_Agent_curve_secret_key_file: "/run/secrets/agent_skey"

@@ -16,7 +16,24 @@ This example will start a single Nexoedge cluster which consists of
 The cluster setup is defined in the file `nexoedge-cluster.yml` with the service names listed in the above.
 
 The variables for cluster setup is defined in the file `.env`.
+
+Data Persistence
+
 - `NEXOEDGE_DATA_DIR`: Parent directory for Docker bind mounts.
+
+Nexoedge Configurations
+
+- `NEXOEDGE_PROXY_IP`: IP or domain name of the proxy. It should be reachable by the agents.
+- `NEXOEDGE_PROXY_PORT`: Port of the proxy that opens to connections from agents.
+- `NEXOEDGE_STORAGE_NODE_1_IP`: IP or domain name of the first agent. It should be reachable by the proxy.
+- `NEXOEDGE_STORAGE_NODE_2_IP`: IP or domain name of the second agent. It should be reachable by the proxy.
+- `NEXOEDGE_STORAGE_POLICY_N`: Total number of chunks per erasure coded stripe.
+- `NEXOEDGE_STORAGE_POLICY_K`: Number of data chunks per erasure coded stripe.
+- `NEXOEDGE_STORAGE_POLICY_F`: Number of agents failures to tolerate per erasure coded stripe.
+- `NEXOEDGE_STORAGE_POLICY_MAX_CHUNK_SIZE`: Maximum size of an erasure coded chunk.
+
+Docker-related Settings
+
 - `NEXOEDGE_NETWORK`: Name of the container network to connect the Nexoedge containers
 - `TAG`: Tag of the images to use, e.g., release date or version.
 - `NEXOEDGE_CIFS_IMAGE_NAME`: Name of the container image to use for Nexoedge CIFS

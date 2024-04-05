@@ -68,6 +68,11 @@ spec:
             configMapKeyRef:
               name: proxy
               key: storage-class-k
+        - name: NCLOUD_STORAGECLASS_Standard_Max_chunk_size
+          valueFrom:
+            configMapKeyRef:
+              name: proxy
+              key: storage-class-max-chunk-size
         - name: NCLOUD_STORAGECLASS_Standard_Coding
           valueFrom:
             configMapKeyRef:

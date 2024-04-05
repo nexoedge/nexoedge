@@ -21,16 +21,21 @@ services:
   proxy:
     image: ${NEXOEDGE_PROXY_IMAGE_NAME}:${TAG}
     ports:
-      - "57002:57002"
+      - ${NEXOEDGE_PROXY_PORT}:${NEXOEDGE_PROXY_PORT}
     environment:
       NCLOUD_PROXY_Metastore_Ip: "metastore"
       NCLOUD_PROXY_Reporter_db_Ip: "statsdb"
       NCLOUD_PROXY_Reporter_db_Port: "6379"
       NCLOUD_PROXY_Dedup_Enabled: "0"
+      NCLOUD_GENERAL_Proxy01_Coord_port: ${NEXOEDGE_PROXY_PORT}
       NCLOUD_GENERAL_Network_Use_curve: "1"
       NCLOUD_GENERAL_Network_Proxy_curve_public_key_file: "/run/secrets/proxy_pkey"
       NCLOUD_GENERAL_Network_Proxy_curve_secret_key_file: "/run/secrets/proxy_skey"
       NCLOUD_GENERAL_Network_Agent_curve_public_key_file: "/run/secrets/agent_pkey"
+      NCLOUD_STORAGECLASS_Standard_N: ${NEXOEDGE_STORAGE_POLICY_N}
+      NCLOUD_STORAGECLASS_Standard_K: ${NEXOEDGE_STORAGE_POLICY_K}
+      NCLOUD_STORAGECLASS_Standard_F: ${NEXOEDGE_STORAGE_POLICY_F}
+      NCLOUD_STORAGECLASS_Standard_Max_chunk_size: ${NEXOEDGE_STORAGE_POLICY_MAX_CHUNK_SIZE}
     secrets:
       - proxy_pkey
       - proxy_skey
