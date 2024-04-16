@@ -3,8 +3,7 @@
 System Requirements
 ===================
 
-Nexoedge supports deployment on **physical servers and virtual machines (VMware, Hyper-V, KVM)** in the community version.
-In the enterprise version, it also supports container-based deployment (Docker and Kubernetes).
+Nexoedge supports deployment on physical servers and virtual machines (VMware, Hyper-V, KVM), as well as container-based deployment using Docker and Kubernetes.
 
 Platform
 --------

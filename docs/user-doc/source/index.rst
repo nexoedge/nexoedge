@@ -4,7 +4,7 @@
    contain the root `toctree` directive.
 
 Nexoedge Documentation
-====================
+======================
 
 .. toctree::
    :maxdepth: 2

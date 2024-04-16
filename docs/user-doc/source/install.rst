@@ -1,14 +1,15 @@
 Installation
 ============
 
-Nexoedge supports installation on physical and virtual machines in the community version. It also supports container-based deployment in the enterprise version.
+Nexoedge supports installation on physical and virtual machines and container-based deployment.
+
 For machine requirements, see :ref:`sys-requirements` for details.
 
 Physical and Virtual Machines
 +++++++++++++++++++++++++++++
 
 Nexoedge Key Entities 
-^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^
 
 #. Get the Debian package (nexoedge-|version|-amd64-full.deb).
 #. Update the APT repository list: 
@@ -128,7 +129,13 @@ To uninstall the SMB service, run the `uninstall.sh` under the `scripts` folder.
    $ sudo bash uninstall.sh
 
 
+Container-based Deployment
+++++++++++++++++++++++++++
+
+For container-based deployment, install the latest version of Docker engine according to `Docker official installation guide`_.
+
+
 .. _Samba: https://www.samba.org/
 .. _Samba configuration guide: https://www.samba.org/samba/docs/current/man-html/smb.conf.5.html
-
+.. _Docker official installation guide: https://docs.docker.com/engine/install/
 

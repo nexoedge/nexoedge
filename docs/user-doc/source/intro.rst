@@ -3,6 +3,13 @@ Overview
 
 **Nexoedge** is a multi-cloud storage system that builds on the network coding technology to provide reliability, security, low-cost, scalability, performance, and configurability guarantees. Nexoedge enables applications to seamlessly utilize cloud storage in multiple clouds as a reliable and efficient storage pool.
 
+`Nexoedge is an open-source project of Linux Foundation Edge`_. Its source code is available on Github_ under the `Apache 2.0 license`_.
+
+.. _Nexoedge is an open-source project of Linux Foundation Edge: https://lfedge.org/projects/nexoedge/
+.. _Apache 2.0 license: https://www.apache.org/licenses/LICENSE-2.0
+.. _Github: https://github.com/nexoedge/nexoedge
+
+
 Key Entities
 ------------
 
@@ -19,7 +26,7 @@ An agent handles data access at storage destinations within the same data center
 
    Nexoedge Architecture
 
-Users and applications can access data in Nexoedge through the standard file storage protocol SMB (or CIFS) in the community version. In the enterprise version, Nexoedge also supports data access via NFS and the object storage protocol S3.
+Users and applications can access data in Nexoedge through the standard file storage protocol SMB.
 
 Data Protection
 ---------------
@@ -27,7 +34,7 @@ Data Protection
 Fault Tolerance
 +++++++++++++++
 
-Nexoedge supports storage schemes based on erasure coding for fault tolerance in the community version. In the enterprise version, it also supports erasure coding schemes with enhanced security and network coding.
+Nexoedge supports storage schemes based on erasure coding for fault tolerance.
 
 Data fault tolerance level in Nexoedge are configurable via three parameters:
 
@@ -98,7 +105,7 @@ To save the cross-data-center repair traffic, CAR partially encodes chunks in DC
 Data Integrity
 ++++++++++++++
 
-Nexoedge protects data integrity using file-/object-level and chunk-level checksums. Checksum verification can be enabled for data access operations.
+Nexoedge protects data integrity using file-level and chunk-level checksums. Checksum verification can be enabled for data access operations.
 
 
 Automated Recovery
@@ -109,49 +116,12 @@ Nexoedge supports automated recovery to restore data fault tolerance level and c
 
 Nexoedge adopts the "security-via-diversity" approach, in which security is achieved by leveraging the diversity of storage, e.g., vendors, software, and hardware.
 
-Security via Diversity
-++++++++++++++++++++++
-(Enterprise version only)
-
-Nexoedge realizes secure sharing (CAONT-RS [#]_) for data security. CAONT transforms data such that data remains secure even if a party obtains part of the transformed data. In the meantime, data integrity is verifiable during decoding. :numref:`caontrs` shows the workflow of CAONT-RS when *n* = 4 and *k* = 3. 
-
-.. figure:: figs/caont-rs.png
-   :name: caontrs
-
-   Workflow of CAONT-RS, with *n* = 4 and *k* = 3 for RS
-
-Nexoedge treats the original data as the *secret* (*X*) in the algorithm and distributes the resulting *package* using erasure coding. CAONT first computes a hash (*h*) of the original data. It then masked the original data using a *mask block* (*G*) generated with the hash to give the *transformed data* (*Y*). It further computes another hash from the masked data for masking the hash of the original data, resulting in a *masked hash* (*t*). It finally appends the masked hash to the transformed data to form a CAONT package. After that, Nexoedge applies RS codes to the package by dividing it into *k* shares and generating *n* shares with redundancy added. Finally, Nexoedge distributes the *n* shares to *n* independent storage containers for fault tolerance. To decode the original data, a user needs to retrieve at least *k* out of *n* shares. Hence, when an adversary cannot reveal any data with fewer than *k* (compromised) shares.
-
-.. [#] `Mingqiang Li, Chuan Qin, and Patrick P. C. Lee. 2015. CDStore: toward reliable, secure, and cost-efficient cloud storage via convergent dispersal. In Proceedings of the 2015 USENIX Conference on Usenix Annual Technical Conference (USENIX ATC '15). <https://dl.acm.org/doi/10.5555/2813767.2813776>`_
-
-
-Storage Saving
---------------
-
-Deduplication
-+++++++++++++
-(Enterprise version only)
-
-Nexoedge supports inline variable-sized data deduplication for storage saving and improved write performance. :numref:`variable-sized deduplication` illustrates how variable-sized deduplication applies during data write at the proxy, with unique data in blue and duplicated data in yellow. First, the proxy subdivides data into variable-sized blocks according to configurable parameters. Then, the proxy identifies and skips the duplicate data when transferring data to the cloud. By sending and storing only unique data in the cloud, Nexoedge increases the logical usable storage capacity under a given physical storage capacity of clouds, which translates to cost reduction in both network and storage in multi-cloud scenarios. 
-
-.. figure:: figs/dedup-example.png
-   :width: 300
-   :name: Variable-sized deduplication
-
-   Variable-sized deduplication for Data Write
-
 
 Optimizations
 -------------
 
 Performance
 +++++++++++
-
-Multi-threading and Pipelining
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-(Enterprise version only)
-
-Nexoedge employs a multi-threaded design for concurrent request processing and data access. Furthermore, Nexoedge pipelines coding and storage access operations for high performance. The designs enable a better utilization of computing power and network bandwidth in multi-core and high-bandwidth servers via parallelism.
 
 Staging
 ^^^^^^^
@@ -162,7 +132,7 @@ Nexoedge also comes with a *staging* option to speed up writes and reads. Stagin
 Storage Access
 --------------
 
-In the community version, Nexoedge supports the standard network file system protocol SMB (or CIFS). In the enterprise version, it supports also NFS and object storage protocol S3. 
+Nexoedge supports the standard network file system protocol SMB (or CIFS).
 
-For file operations, create, read, overwrite, rename, copy, and delete, are supported. For object operations, put, get, copy, deletion, and multi-part upload are supported.
+For file operations, create, read, overwrite, rename, copy, and delete, are supported.
 

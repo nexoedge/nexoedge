@@ -23,8 +23,8 @@ import sphinx_rtd_theme
 # -- Project information -----------------------------------------------------
 
 project = u'Nexoedge'
-copyright = u'2018-2023, CU Coding Ltd.'
-author = u'CU Coding Ltd.'
+copyright = u'2023-2024, Linux Foundation Edge Project Nexoedge.'
+author = u'Linux Foundation Edge Project Nexoedge'
 
 # The short X.Y version
 version = u'1.0'
@@ -62,7 +62,7 @@ master_doc = 'index'
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = None
+language = "en"
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -90,7 +90,7 @@ html_theme = "sphinx_rtd_theme"
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+html_static_path = []
 
 # Custom sidebar templates, must be a dictionary that maps document names
 # to template names.
@@ -138,7 +138,7 @@ latex_documents = [
     #(master_doc, 'Nexoedge.tex', u'Nexoedge Documentation',
     # u'ADSLab', 'manual'),
     (master_doc, 'Nexoedge.tex', u'Nexoedge Documentation',
-     u'CU Coding Ltd.', 'manual'),
+     u'Linux Foudation Edge Project Nexoedge Team', 'manual'),
 ]
 
 
