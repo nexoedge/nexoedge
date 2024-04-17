@@ -818,13 +818,12 @@ bool ChunkManager::operateOnAliveChunks(const File &file, bool chunkIndicator[],
         return true;
     }
 
-    ChunkEvent events[file.numChunks * 2];
     int selected = 0;
     Coding *coding = getCodingInstance(file.codingMeta.coding, file.codingMeta.n, file.codingMeta.k);
     int numChunksPerNode = coding? coding->getNumChunksPerNode() : 1;
 
     // only operate on alive chunks
-    int chunkIndices[file.numChunks];
+    int *chunkIndices = new int[file.numChunks];
     for (int i = 0; i < file.numChunks / numChunksPerNode; i++) {
 
         // check and skip non-alive chunks
@@ -845,8 +844,11 @@ bool ChunkManager::operateOnAliveChunks(const File &file, bool chunkIndicator[],
     bool okay = true;
     for (int i = 0, inc = 0; i < selected; i+= inc) {
         inc = std::min(selected - i, Config::getInstance().getN());
-        okay &= accessChunks(events + i * 2, file, inc, reqOp, expectedOpRep, numChunksPerNode, chunkIndices + i);
+        ChunkEvent events[inc * 2];
+        okay &= accessChunks(events, file, inc, reqOp, expectedOpRep, numChunksPerNode, chunkIndices + i);
     }
+
+    delete [] chunkIndices;
 
     return okay;
 }
