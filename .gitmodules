@@ -1,0 +1,3 @@
+[submodule "k8s/csi-driver-smb"]
+	path = k8s/csi-driver-smb
+	url = https://github.com/kubernetes-csi/csi-driver-smb/

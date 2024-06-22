@@ -6,6 +6,11 @@ kind_cluster_config=kind-cluster.yaml
 kind_cluster_name=nexoedge-k8s-example
 kind_context=kind-${kind_cluster_name}
 
+deploy_csi_cifs_drvier=1
+csi_driver_smb_dir=csi-driver-smb
+sleep_time=10
+timeout_time=120s
+
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 CYAN='\033[0;36m'
@@ -103,11 +108,17 @@ cleanup() {
   for ((idx=${#resources[@]}-1; idx >= 0; idx--)); do 
     kubectl delete -f ${resources[$idx]} --context=${kind_context}
   done
+  INFO "> Removing the CSI SMB driver..."
+  cd ${csi_driver_smb_dir} && ./deploy/uninstall-driver.sh v1.14.0 local; cd -
   destroy_kind_cluster
   return 0
 }
 
 term() {
+  INFO "> Removing the example SMB mount deployment..."
+  cd ${csi_driver_smb_dir} && kubectl delete -f ./deploy/example/statefulset.yaml --context=${kind_context}; cd -
+  kubectl --namespace ${namespace} delete secret smbcreds --context=${kind_context}
+  kubectl delete -f smb-storage-class.yaml --context=${kind_context}
   INFO "> Terminating the deployments..."
   for ((idx=${#deployments[@]}-1; idx >= 0; idx--)); do 
     kubectl delete -f ${deployments[$idx]} --context=${kind_context}
@@ -130,6 +141,13 @@ create() {
   for d in ${volumes[@]}; do 
     kubectl apply -f ${d} --context=${kind_context}
   done
+  if [ ${deploy_csi_cifs_drvier} -eq 1 ]; then
+    INFO "> Deploying SMB CSI driver ..."
+    cd ${csi_driver_smb_dir} && ./deploy/install-driver.sh v1.14.0 local; cd -
+    sleep ${sleep_time}
+    kubectl --namespace kube-system wait pod -l app=csi-smb-controller --for=condition=Ready --timeout=${timeout_time} --context=${kind_context}
+    kubectl --namespace kube-system wait pod -l app=csi-smb-node --for=condition=Ready --timeout=${timeout_time} --context=${kind_context}
+  fi
   start
 }
 
@@ -139,6 +157,19 @@ start() {
   for d in ${deployments[@]}; do 
     kubectl apply -f ${d} --context=${kind_context}
   done
+  sleep ${sleep_time}
+  kubectl --namespace ${namespace} wait pod --all --for=condition=Ready --timeout=${timeout_time} --context=${kind_context}
+  if [ ${deploy_csi_cifs_drvier} -eq 1 ]; then
+    INFO "> Setting up SMB storage class ..."
+    kubectl --namespace ${namespace} create secret generic smbcreds --from-literal username=nexoedge --from-literal password="nexoedge" --context=${kind_context}
+    kubectl create -f smb-storage-class.yaml --context=${kind_context}
+    INFO "> Starting the deployment of an example SMB mount ..."
+    cd ${csi_driver_smb_dir} && kubectl create -f ./deploy/example/statefulset.yaml --context=${kind_context}; cd -
+    sleep ${sleep_time}
+    kubectl wait pod -l app=nginx --for=condition=Ready --timeout=${timeout_time} --context=${kind_context}
+    INFO "> SMB mount in the example deployment."
+    kubectl exec --context=${kind_context} -it statefulset-smb-0 -- df -h /mnt/smb
+  fi
 }
 
 validate() {
