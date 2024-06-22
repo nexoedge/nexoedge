@@ -42,6 +42,7 @@ The 'app:nexoedge-proxy' application runs a Nexoedge proxy, which connects to th
 
 Each of the 'app:nexoedge-agent-1' and 'app:nexoedge-agent-2' application runs a Nexoedge agent (with two storage containers), which registers to the Nexoedge proxy through the 'svc:nexoedge-internal-proxy' service. They expose the data access interfaces to the Nexoedge proxy through 'svc:nexoedge-agent-1' and 'svc:nexoedge-agent-2' services.
 
+This example also includes an optional part that demonstrates the provision of Kubernetes persistent volumes from Nexoedge using the [SMB CSI driver](https://github.com/kubernetes-csi/csi-driver-smb/).
 
 ## Pre-requisites
 
@@ -59,6 +60,11 @@ The example requires port 445 of the host to be available for the CIFS service. 
 ## How to run the example 
 
 ### Start the cluster
+
+1. Pull the source code of the SMB CSI driver as a sub-module
+   ```bash
+   git submodule update --init
+   ```
 
 1. Build and run the Kind and Nexoedge cluster
    ```bash
@@ -106,6 +112,10 @@ The example requires port 445 of the host to be available for the CIFS service. 
    ./cmd.sh
    ```
 
+### Optional configurations
+
+- Disable the example on persistent volume provisioning
+  - In `cmd.sh`, change the line `deploy_csi_cifs_drvier=1` to `deploy_csi_cifs_drvier=0`.
 
 ## Yaml File Organization
 
@@ -144,4 +154,8 @@ General Nexoedge Cluster Setup
 Kind Cluster Setup
 
 - `kind-cluster.yaml`: A basic Kind cluster configuration for setting up a single Kind cluster
+
+Others
+
+- `smb-storage-class.yaml`: Storage class configuration for persistent volume provisioning via the SMB CSI driver
 
