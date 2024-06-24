@@ -80,14 +80,5 @@ services:
       - portal-backend
 
 secrets:
-  proxy_pkey:
-    file: comm_ssl/proxy_pkey
   proxy_skey:
     file: comm_ssl/proxy_skey
-  agent_pkey:
-    file: comm_ssl/agent_pkey
-
-networks:
-  nexoedge:
-    name: nexoedge-network
-    external: true

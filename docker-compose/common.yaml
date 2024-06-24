@@ -1,0 +1,10 @@
+networks:
+  nexoedge:
+    name: nexoedge-network
+    external: true
+
+secrets:
+  proxy_pkey:
+    file: comm_ssl/proxy_pkey
+  agent_pkey:
+    file: comm_ssl/agent_pkey

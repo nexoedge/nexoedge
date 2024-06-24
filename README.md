@@ -18,7 +18,9 @@ Nexoedge provides file storage access to applications via the Server Message Blo
 
 In a general deployment, we assume each Nexoedge entity is hosted on a separate node (e.g., physical server or virtual machine). Agent nodes run in the cloud, whilst the proxy node runs at the edge (hosting both the proxy and the SMB server).
 
-Nexoedge proxies and agents communicate over TCP/IP connections.
+Nexoedge proxies and agents communicate over TCP/IP connections with optional [traffic encryption][zeromq-curve].
+
+[zeromq-curve]: https://rfc.zeromq.org/spec/26/
 
 ### Modular Design
 

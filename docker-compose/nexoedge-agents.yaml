@@ -73,14 +73,6 @@ services:
       - proxy
 
 secrets:
-  agent_pkey:
-    file: comm_ssl/agent_pkey
   agent_skey:
     file: comm_ssl/agent_skey
-  proxy_pkey:
-    file: comm_ssl/proxy_pkey
 
-networks:
-  nexoedge:
-    name: nexoedge-network
-    external: true

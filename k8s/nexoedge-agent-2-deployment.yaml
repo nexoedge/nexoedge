@@ -25,7 +25,7 @@ spec:
             name: nexoedge-agent-pv-storage-04
       containers:
       - name: agent
-        image: helenchw/nexoedge-agent:20240326
+        image: nexoedge/nexoedge-agent:v1.1.0
         env:
         - name: NCLOUD_GENERAL_Log_Glog_to_console
           value: "1"

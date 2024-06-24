@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: cifs
-        image: helenchw/nexoedge-cifs:20240326
+        image: nexoedge/nexoedge-cifs:v1.1.0
         ports:
         - containerPort: 445
           name: cifs

@@ -161,7 +161,7 @@ execute_process( COMMAND
     OUTPUT_STRIP_TRAILING_WHITESPACE   
 )
 set( CPACK_PACKAGE_NAME "nexoedge" )
-set( CPACK_PACKAGE_VERSION "1.0" )
+set( CPACK_PACKAGE_VERSION "1.1" )
 set( CPACK_PACKAGE_CONTACT "CUHK ADSLab" )
 set( CPACK_PACKAGE_DESCRIPTION "Nexoedge - Store and distribute your data over multiple clouds" )
 set( CPACK_PACKAGE_DESCRIPTION_SUMMARY "Store and distribute your data over multiple clouds" )
