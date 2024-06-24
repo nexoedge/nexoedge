@@ -53,6 +53,18 @@ const char *host_types[] = {
     "Unknown"
 };
 
+const char *storage_types[] = {
+    "Local",
+    "Alibaba",
+    "AWS",
+    "Azure",
+    "Tencent",
+    "Google",
+    "Huawei",
+
+    "Unknown"
+};
+
 // connections (ncloud, redis)
 ncloud_conn_t conn;
 redisContext *_cxt = 0;
@@ -251,7 +263,7 @@ int get_sys_status() {
                 , i + 1
                 , req.agent_list.list[i].alive? "\e[1;32mALIVE\e[m" : "\e[1;31mDISCONNECTED\e[m"
                 , req.agent_list.list[i].addr
-                , host_types[req.agent_list.list[i].host_type]
+                , storage_types[req.agent_list.list[i].host_type]
                 , req.agent_list.list[i].num_containers
         );
         my_printf("       CPU (%d"
@@ -274,7 +286,7 @@ int get_sys_status() {
             convert_to_human_bytes(req.agent_list.list[i].container_capacity[j], capacity);
             my_printf("      Container [%3d] [%-7s], %13lu/%13lu (%s/%s), %.2f%% used\n",
                     req.agent_list.list[i].container_id[j],
-                    host_types[req.agent_list.list[i].container_type[j]],
+                    storage_types[req.agent_list.list[i].container_type[j]],
                     req.agent_list.list[i].container_usage[j],
                     req.agent_list.list[i].container_capacity[j],
                     usage,
