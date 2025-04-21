@@ -3,8 +3,8 @@ ExternalProject_Add (
     "isa-l" 
     PREFIX "third-party/isa-l"
     EXCLUDE_FROM_ALL true
-    URL ${PROJECT_THIRD_PARTY_LIB_DIR}/isa-l-2.22.0.tar.gz
-    URL_MD5 0219e1d410747ccbdce35a2073464f70
+    URL ${PROJECT_THIRD_PARTY_LIB_DIR}/isa-l-2.31.1.tar.gz
+    URL_MD5 851eb1b98da53c4dc8b94e0119106f03
     UPDATE_COMMAND ""
     BUILD_IN_SOURCE 1
     CONFIGURE_COMMAND ./autogen.sh COMMAND ./configure ${THIRD_PARTY_CONFIG} --enable-shared=false --enable-static=true
@@ -18,10 +18,9 @@ ExternalProject_Add (
     "zero-mq"
     PREFIX "third-party/zeromq"
     EXCLUDE_FROM_ALL true
-    URL ${PROJECT_THIRD_PARTY_LIB_DIR}/zeromq-da31917.tar.gz
-    URL_MD5 7ae4a1413fc96823adee280045381e2c
+    URL ${PROJECT_THIRD_PARTY_LIB_DIR}/zeromq-4.3.5.tar.gz
+    URL_MD5 cfb80c6ad694cacc2f7c99bf44e8b686
     UPDATE_COMMAND ""
-    #PATCH_COMMAND patch -p1 < ${PROJECT_THIRD_PARTY_LIB_DIR}/patch/zeromq-4.2.5.patch
     CMAKE_ARGS
         -DCMAKE_INSTALL_PREFIX=${PROJECT_BINARY_DIR}
         -DBUILD_SHARED=ON
@@ -39,13 +38,14 @@ ExternalProject_Add (
     "google-log"
     PREFIX "third-party/glog"
     EXCLUDE_FROM_ALL true
-    URL ${PROJECT_THIRD_PARTY_LIB_DIR}/glog-0.6.0.tar.gz
-    URL_MD5 c98a6068bc9b8ad9cebaca625ca73aa2
+    URL ${PROJECT_THIRD_PARTY_LIB_DIR}/glog-0.7.1.tar.gz
+    URL_MD5 128e2995cc33d794ff24f785a3060346
     UPDATE_COMMAND ""
     CMAKE_ARGS
         -DCMAKE_BUILD_TYPE=Release
         -DCMAKE_INSTALL_PREFIX=${PROJECT_BINARY_DIR}
         -DWITH_GFLAGS=OFF
+        -DGLOG_EXPORT=ON
 )
 
 ## hiredis

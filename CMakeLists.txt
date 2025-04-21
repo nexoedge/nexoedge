@@ -31,7 +31,7 @@ option( BUILD_UTILS "Build Nexoedge Utils" ON )
 
 ## Global compile flags
 set ( CMAKE_CXX_STANDARD 17 )
-set ( CMAKE_CXX_FLAGS "-Wall -Werror" )
+set ( CMAKE_CXX_FLAGS "-Wall -Werror -DGLOG_USE_GLOG_EXPORT" )
 set ( CMAKE_CXX_FLAGS_DEBUG "-g -O0" )
 set ( CMAKE_CXX_FLAGS_RELEASE "-DNDEBUG -O2" )
 ## Use address sanitizer
